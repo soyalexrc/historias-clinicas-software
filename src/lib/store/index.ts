@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import patientsReducer from '@/lib/store/features/patients/state/patientsSlice'
+import authReducer from '@/lib/store/features/auth/state/authSlice'
 // import {expensesApi} from "@/lib/store/services/expenses";
 // import {setupListeners} from "@reduxjs/toolkit/query";
 // import {categoriesApi} from "@/lib/store/services/categories";
@@ -8,6 +9,7 @@ import patientsReducer from '@/lib/store/features/patients/state/patientsSlice'
 export const store = configureStore({
     reducer: {
         patients: patientsReducer,
+        auth: authReducer,
         // [expensesApi.reducerPath]: expensesApi.reducer,
         // [categoriesApi.reducerPath]: categoriesApi.reducer,
         // [userSettingsApi.reducerPath]: userSettingsApi.reducer,

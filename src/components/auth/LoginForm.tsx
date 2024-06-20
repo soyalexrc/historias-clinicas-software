@@ -5,6 +5,11 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
+import {useClerk, useSignIn} from "@clerk/nextjs";
+import {useRouter} from "next/navigation";
+import {getCurrentUser} from "@/actions/auth";
+import {useAppDispatch} from "@/lib/store/hooks";
+import {updateUserInfo} from "@/lib/store/features/auth/state/authSlice";
 
 const formSchema = z.object({
     username: z.string().min(3, {
@@ -16,6 +21,9 @@ const formSchema = z.object({
 })
 
 export default function LoginForm() {
+    const {isLoaded, setActive, signIn} = useSignIn()
+    const router = useRouter();
+    const dispatch = useAppDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -24,10 +32,23 @@ export default function LoginForm() {
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        if (!isLoaded) {
+            return;
+        }
+        const completeSignIn = await signIn?.create({
+            identifier: values.username,
+            password: values.password
+        });
+
+
+        if (setActive) {
+            await setActive({session: completeSignIn?.createdSessionId})
+            const userString = await getCurrentUser();
+            const user = JSON.parse(userString!);
+            dispatch(updateUserInfo(user));
+            router.replace('/sistema');
+        }
     }
 
     return (

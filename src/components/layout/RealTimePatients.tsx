@@ -2,13 +2,15 @@
 
 import {useEffect, useState} from "react";
 import db from "@/lib/firebase/firestore";
-import {collection, doc, onSnapshot, query, Timestamp} from "@firebase/firestore";
+import {collection, onSnapshot, query} from "@firebase/firestore";
+import {useAppSelector} from "@/lib/store/hooks";
+import {selectUser} from "@/lib/store/features/auth/state/authSlice";
 
 export default function RealTimePatients() {
     const [patientsInQueue, setPatientsInQueue] = useState<any[]>([]);
-    const role = 'traumatologia';
+    const user = useAppSelector(selectUser);
     useEffect(() => {
-        const q = query(collection(db, role));
+        const q = query(collection(db, user.publicMetadata.service));
         const unsub = onSnapshot(q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 const date = doc.data().datetime.toDate();
