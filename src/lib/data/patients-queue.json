@@ -1,0 +1,12 @@
+{
+  "patientsQueue" : [
+    {
+      "name": "Alejandro Perez Savedra",
+      "service": "Traumatologia"
+    },
+    {
+      "name": "Sandra Martinez",
+      "service": "Oftalmologia"
+    }
+  ]
+}
