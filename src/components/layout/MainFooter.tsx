@@ -24,7 +24,7 @@ export default function MainFooter() {
     }, []);
 
     return (
-        <footer className='flex p-3 border-t-2 fixed bottom-0 w-full'>
+        <footer className='flex p-3 border-t-2 fixed bottom-0 bg-white z-10 w-full'>
             <div className='flex items-center gap-2 border-r-2 px-6'>
                 <CircleUserRound size={20}/>
                 <p className='text-xs'>Renzo Rodriguez</p>
