@@ -1,6 +1,6 @@
 import {ReactNode} from "react";
 import TransactionsToolbar from "@/components/layout/transactions-toolbar/TransactionsToolbar";
-import RealTimePatients from "@/components/layout/RealTimePatients";
+import RealTimePatients from "@/components/patients/RealTimePatients";
 
 export default function Layout({ children }: Readonly<{ children: ReactNode }>) {
     return (

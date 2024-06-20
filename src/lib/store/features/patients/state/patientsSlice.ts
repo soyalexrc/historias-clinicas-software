@@ -1,23 +1,27 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {RootState} from "@/lib/store";
-
-// import type { PayloadAction } from '@reduxjs/toolkit'
+import {Patient} from "@/lib/interfaces/Patient";
 
 export interface PatientsState {
-    queue: any[]
+    queue: Patient[]
 }
 
 const initialState: PatientsState = {
-    queue: typeof sessionStorage !== 'undefined' ? JSON.parse(sessionStorage?.getItem('patients') ?? '[]') || [] : [],
+    queue: [],
 }
 
 export const expensesSlice = createSlice({
     name: 'patients',
     initialState,
     reducers: {
-        addNewPatientToQueue: (state, action: PayloadAction<any>) => {
-            state.queue.push(action.payload);
-            sessionStorage.setItem('patients', JSON.stringify(state.queue));
+        addNewPatientToQueue: (state, action: PayloadAction<Patient>) => {
+            const upcomingPatient = action.payload;
+            if (state.queue.some(patient => patient.id === upcomingPatient.id)) {
+                const index = state.queue.findIndex(patient => patient.id === upcomingPatient.id);
+                state.queue.splice(index, 1, upcomingPatient);
+            } else {
+                state.queue.push(action.payload);
+            }
         }
     },
 })

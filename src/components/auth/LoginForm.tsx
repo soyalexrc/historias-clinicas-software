@@ -1,8 +1,8 @@
 'use client';
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import {zodResolver} from "@hookform/resolvers/zod"
+import {useForm} from "react-hook-form"
+import {z} from "zod"
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {useClerk, useSignIn} from "@clerk/nextjs";
@@ -47,7 +47,16 @@ export default function LoginForm() {
             const userString = await getCurrentUser();
             const user = JSON.parse(userString!);
             dispatch(updateUserInfo(user));
-            router.replace('/sistema');
+            switch (user.publicMetadata.role) {
+                case "cashier":
+                    router.replace('/filiacion');
+                    break;
+                case "admin":
+                    router.replace('/administracion');
+                    break;
+                case "attention":
+                    router.replace('/sistema');
+            }
         }
     }
 
@@ -57,7 +66,7 @@ export default function LoginForm() {
                 <FormField
                     control={form.control}
                     name='username'
-                    render={({ field }) => (
+                    render={({field}) => (
                         <FormItem className='mb-10'>
                             <FormLabel>Nombre de usuario</FormLabel>
                             <FormControl>
@@ -66,20 +75,20 @@ export default function LoginForm() {
                             <FormDescription>
                                 Este es tu nombre de acceso
                             </FormDescription>
-                            <FormMessage />
+                            <FormMessage/>
                         </FormItem>
                     )}
                 />
                 <FormField
                     control={form.control}
                     name='password'
-                    render={({ field }) => (
+                    render={({field}) => (
                         <FormItem>
                             <FormLabel>Contrasena</FormLabel>
                             <FormControl>
                                 <Input className='min-h-10' placeholder='*******' {...field} />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage/>
                         </FormItem>
                     )}
                 />

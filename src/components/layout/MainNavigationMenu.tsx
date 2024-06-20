@@ -16,7 +16,7 @@ export function MainNavigationMenu() {
     async function handleSignOut() {
         dispatch(updateUserInfo({}))
         await signOut({
-            redirectUrl: '/'
+            redirectUrl: '/ingreso'
         })
     }
 

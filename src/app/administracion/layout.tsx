@@ -1,23 +1,20 @@
-import {MainNavigationMenu} from "@/components/layout/MainNavigationMenu";
-import MainFooter from "@/components/layout/MainFooter";
 import {currentUser} from "@clerk/nextjs/server";
 import {redirect} from "next/navigation";
+import {MainNavigationMenu} from "@/components/layout/MainNavigationMenu";
 
 export default async function Layout({children}: Readonly<{ children: React.ReactNode }>) {
     const user = await currentUser();
 
-    if (user?.publicMetadata.role !== 'attention') {
+    if (user?.publicMetadata.role !== 'admin') {
         redirect('/');
     }
 
-    console.log(user);
     return (
         <div>
             <MainNavigationMenu/>
             <div className='pt-12 min-h-screen'>
                 {children}
             </div>
-            <MainFooter/>
         </div>
     )
 }
