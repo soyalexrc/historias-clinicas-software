@@ -53,7 +53,7 @@ export default function TransactionsForm() {
             <div className='mt-2 flex gap-6 pt-2'>
                 <div className='flex gap-2 items-center'>
                     <small className='font-bold'>Paciente</small>
-                    <Input value='Alex Leonardo Rodriguez Carvajal' disabled/>
+                    <Input className='w-[300px]' value='Alex Leonardo Rodriguez Carvajal' disabled/>
                 </div>
                 <div className='flex gap-2 items-center'>
                     <small className='font-bold'>Comprobante</small>

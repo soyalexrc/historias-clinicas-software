@@ -1,6 +1,5 @@
 import {Patient} from "@/lib/interfaces/Patient";
-import {Badge} from "@/components/ui/badge";
-import {Calendar, CircleCheck, CircleDashed, Clock, UserCircle} from "lucide-react";
+import {Calendar, Clock, UserCircle} from "lucide-react";
 
 export default function PatientCard({patient}: { patient: Patient }) {
     return (
@@ -19,24 +18,6 @@ export default function PatientCard({patient}: { patient: Patient }) {
                     </div>
                 ))
             }
-            <div className='flex justify-end'>
-                <Badge variant='secondary' className='bg-white text-black mt-2'>
-                    {
-                        patient.attend &&
-                        <div className='flex items-center gap-2'>
-                            <span>Atendido</span>
-                            <CircleCheck color='green'/>
-                        </div>
-                    }
-                    {
-                        !patient.attend &&
-                        <div className='flex items-center gap-2'>
-                            <span>En espera</span>
-                            <CircleDashed color='#facc14' />
-                        </div>
-                    }
-                </Badge>
-            </div>
         </div>
     )
 }

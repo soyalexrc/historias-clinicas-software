@@ -1,7 +1,15 @@
 import LoginForm from "@/components/auth/LoginForm";
 import LoginAnimation from "@/components/auth/LoginAnimation";
+import {currentUser} from "@clerk/nextjs/server";
+import {redirect} from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+    const user = await currentUser();
+
+    if (user) {
+        redirect('/');
+    }
+
     return (
         <main className="grid grid-cols-12 min-h-screen">
             <div className='col-span-7 bg-gray-100 flex items-center justify-center'>
