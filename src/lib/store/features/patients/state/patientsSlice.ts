@@ -20,7 +20,7 @@ export const expensesSlice = createSlice({
                 const index = state.queue.findIndex(patient => patient.id === upcomingPatient.id);
                 state.queue.splice(index, 1, upcomingPatient);
             } else {
-                state.queue.push(action.payload);
+                state.queue.unshift(action.payload);
             }
         }
     },
@@ -29,6 +29,8 @@ export const expensesSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {addNewPatientToQueue} = expensesSlice.actions
 
-export const selectPatientsQueue = (state: RootState) => state.patients.queue
+export const selectPatientsQueue = (state: RootState) => state.patients.queue;
+export const selectPatientsQueueAttended = (state: RootState) => state.patients.queue.filter(pat => pat.attend).length
+export const selectPatientsQueueWaiting = (state: RootState) => state.patients.queue.filter(pat => !pat.attend).length
 
 export default expensesSlice.reducer

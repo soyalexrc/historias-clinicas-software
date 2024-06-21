@@ -1,8 +1,7 @@
-import {Timestamp} from "@firebase/firestore-types";
 
 export interface Patient {
     name: string;
-    datetime: Timestamp,
+    datetime: string,
     datetimeString: string;
     service: string;
     attend: boolean;

@@ -8,7 +8,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-    user: typeof sessionStorage !== 'undefined' ? JSON.parse(sessionStorage?.getItem('smart-report-user') ?? '{}') || {} : {},
+    user: typeof localStorage !== 'undefined' ? JSON.parse(localStorage?.getItem('smart-report-user') ?? '{}') || {} : {},
 }
 
 export const expensesSlice = createSlice({
@@ -17,7 +17,7 @@ export const expensesSlice = createSlice({
     reducers: {
         updateUserInfo: (state, action: PayloadAction<any>) => {
             state.user = action.payload
-            sessionStorage.setItem('smart-report-user', JSON.stringify(state.user));
+            localStorage.setItem('smart-report-user', JSON.stringify(state.user));
         }
     },
 })
