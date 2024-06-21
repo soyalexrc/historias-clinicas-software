@@ -18,13 +18,17 @@ export const authSlice = createSlice({
     reducers: {
         updateUserInfo: (state, action: PayloadAction<ClerkUser>) => {
             state.user = action.payload
-            localStorage.setItem('smart-report-user', JSON.stringify(state.user));
+            localStorage.setItem('sm-user', JSON.stringify(state.user));
+        },
+        kickOut: (state) => {
+            state.user = {} as any;
+            localStorage.setItem('sm-user', JSON.stringify({}));
         }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const {updateUserInfo} = authSlice.actions
+export const {updateUserInfo, kickOut} = authSlice.actions
 
 export const selectUser = (state: RootState) => state.auth.user
 

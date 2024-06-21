@@ -6,7 +6,7 @@ import {Button} from "@/components/ui/button";
 import {useRouter} from "next/navigation";
 import {useClerk} from "@clerk/nextjs";
 import {useAppDispatch} from "@/lib/store/hooks";
-import {updateUserInfo} from "@/lib/store/features/auth/state/authSlice";
+import {kickOut} from "@/lib/store/features/auth/state/authSlice";
 
 export function MainNavigationMenu() {
     const router = useRouter();
@@ -14,7 +14,7 @@ export function MainNavigationMenu() {
     const dispatch = useAppDispatch();
 
     async function handleSignOut() {
-        dispatch(updateUserInfo({}))
+        dispatch(kickOut())
         await signOut({
             redirectUrl: '/ingreso'
         })
