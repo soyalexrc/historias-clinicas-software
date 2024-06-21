@@ -79,3 +79,8 @@
 .h-screen-with-footer {
     height: calc(100vh - 48px);
 }
+
+
+.h-screen-custom {
+    height: calc(100vh - 286px);
+}

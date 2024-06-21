@@ -10,7 +10,7 @@ const initialState: PatientsState = {
     queue: [],
 }
 
-export const expensesSlice = createSlice({
+export const patientsSlice = createSlice({
     name: 'patients',
     initialState,
     reducers: {
@@ -27,10 +27,10 @@ export const expensesSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const {addNewPatientToQueue} = expensesSlice.actions
+export const {addNewPatientToQueue} = patientsSlice.actions
 
 export const selectPatientsQueue = (state: RootState) => state.patients.queue;
 export const selectPatientsQueueAttended = (state: RootState) => state.patients.queue.filter(pat => pat.attend).length
 export const selectPatientsQueueWaiting = (state: RootState) => state.patients.queue.filter(pat => !pat.attend).length
 
-export default expensesSlice.reducer
+export default patientsSlice.reducer

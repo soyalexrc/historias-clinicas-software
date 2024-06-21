@@ -24,7 +24,7 @@ export default function RealTimePatients() {
 
     useEffect(() => {
         setLoading(true);
-        const q = query(collection(db, user?.publicMetadata?.service));
+        const q = query(collection(db, user?.publicMetadata?.service.value));
         const unsub = onSnapshot(q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 const date = doc.data().datetime.toDate();

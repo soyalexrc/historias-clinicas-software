@@ -5,14 +5,14 @@ import {ClerkUser} from "@/lib/interfaces/User";
 // import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface AuthState {
-    user: any
+    user: ClerkUser
 }
 
 const initialState: AuthState = {
     user: typeof localStorage !== 'undefined' ? JSON.parse(localStorage?.getItem('smart-report-user') ?? '{}') || {} : {},
 }
 
-export const expensesSlice = createSlice({
+export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
@@ -24,8 +24,8 @@ export const expensesSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const {updateUserInfo} = expensesSlice.actions
+export const {updateUserInfo} = authSlice.actions
 
 export const selectUser = (state: RootState) => state.auth.user
 
-export default expensesSlice.reducer
+export default authSlice.reducer

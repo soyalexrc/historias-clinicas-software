@@ -57,6 +57,11 @@ export interface EMetadata {
 export interface PublicMetadata {
     role:    string;
     type:    string;
-    service: string;
+    service: MetadataService;
+}
+
+export interface MetadataService {
+    title: string;
+    value: string;
 }
 
