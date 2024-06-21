@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {RootState} from "@/lib/store";
+import {ClerkUser} from "@/lib/interfaces/User";
 
 // import type { PayloadAction } from '@reduxjs/toolkit'
 
@@ -15,7 +16,7 @@ export const expensesSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        updateUserInfo: (state, action: PayloadAction<any>) => {
+        updateUserInfo: (state, action: PayloadAction<ClerkUser>) => {
             state.user = action.payload
             localStorage.setItem('smart-report-user', JSON.stringify(state.user));
         }

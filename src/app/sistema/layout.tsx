@@ -10,7 +10,6 @@ export default async function Layout({children}: Readonly<{ children: React.Reac
         redirect('/');
     }
 
-    console.log(user);
     return (
         <div>
             <MainNavigationMenu/>

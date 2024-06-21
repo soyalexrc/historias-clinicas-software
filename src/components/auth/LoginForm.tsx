@@ -5,11 +5,12 @@ import {useForm} from "react-hook-form"
 import {z} from "zod"
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-import {useClerk, useSignIn} from "@clerk/nextjs";
+import {useSignIn} from "@clerk/nextjs";
 import {useRouter} from "next/navigation";
-import {getCurrentUser} from "@/actions/auth";
 import {useAppDispatch} from "@/lib/store/hooks";
 import {updateUserInfo} from "@/lib/store/features/auth/state/authSlice";
+import {useState} from "react";
+import {ClerkUser} from "@/lib/interfaces/User";
 
 const formSchema = z.object({
     username: z.string().min(3, {
@@ -22,6 +23,7 @@ const formSchema = z.object({
 
 export default function LoginForm() {
     const {isLoaded, setActive, signIn} = useSignIn()
+    const [loading, setLoading] = useState<boolean>(false)
     const router = useRouter();
     const dispatch = useAppDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -36,27 +38,32 @@ export default function LoginForm() {
         if (!isLoaded) {
             return;
         }
-        const completeSignIn = await signIn?.create({
-            identifier: values.username,
-            password: values.password
-        });
-
-
-        if (setActive) {
-            await setActive({session: completeSignIn?.createdSessionId})
-            const userString = await getCurrentUser();
-            const user = JSON.parse(userString!);
-            dispatch(updateUserInfo(user));
-            switch (user.publicMetadata.role) {
-                case "cashier":
-                    router.replace('/filiacion');
-                    break;
-                case "admin":
-                    router.replace('/administracion');
-                    break;
-                case "attention":
-                    router.replace('/sistema');
+        setLoading(true);
+        try {
+            const completeSignIn = await signIn?.create({
+                identifier: values.username,
+                password: values.password
+            });
+            if (setActive) {
+                await setActive({session: completeSignIn?.createdSessionId})
+                const data = await fetch('/api/auth/user/getUserInSession');
+                const user = await data.json() as ClerkUser;
+                dispatch(updateUserInfo(user));
+                switch (user.publicMetadata.role) {
+                    case "cashier":
+                        router.replace('/filiacion');
+                        break;
+                    case "admin":
+                        router.replace('/administracion');
+                        break;
+                    case "attention":
+                        router.replace('/sistema');
+                }
             }
+        } catch (err: any) {
+            console.log(err.errors)
+            setLoading(false);
+            //     TODO handle Error Signing In
         }
     }
 
@@ -92,8 +99,15 @@ export default function LoginForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className='w-full mt-10'>Ingresar</Button>
-
+                <Button type="submit" disabled={loading} className='w-full mt-10 flex gap-2'>
+                    {
+                        loading &&
+                        <div
+                            className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                            role="status"/>
+                    }
+                    {loading ? 'Ingresando...' : 'Ingresar'}
+                </Button>
             </form>
         </Form>
     )
