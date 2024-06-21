@@ -2,6 +2,8 @@ import {NextRequest, NextResponse} from "next/server";
 import {decodeJwt} from "@clerk/backend/jwt";
 import {clerkClient} from "@clerk/nextjs/server";
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: NextRequest) {
     try {
         const cookies = req.cookies;
