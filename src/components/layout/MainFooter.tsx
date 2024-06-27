@@ -4,12 +4,18 @@ import {CalendarClock, CircleUserRound, Contact, Crown, Hospital, Stethoscope} f
 import {format} from "date-fns";
 import {es} from "date-fns/locale";
 import {useEffect, useState} from "react";
-import {useAppSelector} from "@/lib/store/hooks";
-import {selectUser} from "@/lib/store/features/auth/state/authSlice";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 
-export default function MainFooter() {
-    const user = useAppSelector(selectUser);
+type Props = {
+    firstName: string;
+    lastName: string;
+    username: string;
+    role: string;
+    type: string;
+    serviceTitle: string;
+}
+
+export default function MainFooter(props: Props) {
     const [fullDate, setFullDate] = useState<string>('');
     const locale = es;
 
@@ -31,7 +37,7 @@ export default function MainFooter() {
         <footer className='flex justify-end p-3 border-t-2 fixed bottom-0 bg-white z-10 w-full'>
             <div className='flex items-center gap-2 border-r-2 px-6'>
                 <CircleUserRound size={20}/>
-                <p className='text-xs'>{user?.firstName} {user.lastName}</p>
+                <p className='text-xs'>{props.firstName} {props.lastName}</p>
             </div>
             <div className='flex items-center gap-2 border-r-2 px-6'>
                 <Hospital size={20}/>
@@ -39,9 +45,9 @@ export default function MainFooter() {
             </div>
             <div className='flex items-center gap-2 border-r-2 px-6 relative'>
                 <Stethoscope size={20}/>
-                <p className="text-xs">{user.publicMetadata.service.title}</p>
+                <p className="text-xs">{props.serviceTitle}</p>
                 {
-                    user.publicMetadata.type === 'chief' && user.publicMetadata.role === 'attention' &&
+                    props.type === 'chief' && props.role === 'attention' &&
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger>
@@ -56,7 +62,7 @@ export default function MainFooter() {
             </div>
             <div className='flex items-center gap-2 border-r-2 px-6'>
                 <Contact size={20} />
-                <p className="text-xs">{user.username}</p>
+                <p className="text-xs">{props.username}</p>
             </div>
             <div className='flex items-center gap-2 px-6 min-w-[290px]'>
                 <CalendarClock size={20}/>

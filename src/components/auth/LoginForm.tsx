@@ -7,8 +7,6 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {useSignIn} from "@clerk/nextjs";
 import {useRouter} from "next/navigation";
-import {useAppDispatch} from "@/lib/store/hooks";
-import {updateUserInfo} from "@/lib/store/features/auth/state/authSlice";
 import {useState} from "react";
 import {ClerkUser} from "@/lib/interfaces/User";
 
@@ -25,7 +23,6 @@ export default function LoginForm() {
     const {isLoaded, setActive, signIn} = useSignIn()
     const [loading, setLoading] = useState<boolean>(false)
     const router = useRouter();
-    const dispatch = useAppDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -48,7 +45,6 @@ export default function LoginForm() {
                 await setActive({session: completeSignIn?.createdSessionId})
                 const data = await fetch('/api/auth/user/getUserInSession');
                 const user = await data.json() as ClerkUser;
-                dispatch(updateUserInfo(user));
                 switch (user.publicMetadata.role) {
                     case "cashier":
                         router.replace('/filiacion');

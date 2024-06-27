@@ -16,7 +16,14 @@ export default async function Layout({children}: Readonly<{ children: React.Reac
             <div className='pt-12 min-h-screen'>
                 {children}
             </div>
-            <MainFooter/>
+            {user && <MainFooter
+                type={user.publicMetadata?.type as string}
+                role={user.publicMetadata?.role}
+                lastName={user.lastName as string}
+                firstName={user.firstName as string}
+                serviceTitle={user.publicMetadata?.serviceTitle as string}
+                username={user.username as string}
+            />}
         </div>
     )
 }

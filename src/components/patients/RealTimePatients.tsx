@@ -1,10 +1,9 @@
 'use client';
 
-import {useEffect, useId, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import db from "@/lib/firebase/firestore";
 import {collection, onSnapshot, query} from "@firebase/firestore";
 import {useAppDispatch, useAppSelector} from "@/lib/store/hooks";
-import {selectUser} from "@/lib/store/features/auth/state/authSlice";
 import {
     addNewPatientToQueue,
     selectPatientsQueue, selectPatientsQueueAttended,
@@ -13,18 +12,17 @@ import {
 import {Patient} from "@/lib/interfaces/Patient";
 import PatientCard from "@/components/patients/PatientCard";
 
-export default function RealTimePatients() {
+export default function RealTimePatients({userService}: {userService: string}) {
     const patientsInQueue = useAppSelector(selectPatientsQueue);
     const patientsInQueueWaiting = useAppSelector(selectPatientsQueueWaiting);
     const patientsInQueueAttended = useAppSelector(selectPatientsQueueAttended);
     const [loading, setLoading] = useState<boolean>(true)
     const dispatch = useAppDispatch();
     const audioRef = useRef<any>(null);
-    const user = useAppSelector(selectUser);
 
     useEffect(() => {
         setLoading(true);
-        const q = query(collection(db, user?.publicMetadata?.service.value));
+        const q = query(collection(db, userService));
         const unsub = onSnapshot(q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 const date = doc.data().datetime.toDate();
