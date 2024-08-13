@@ -25,4 +25,57 @@ model Attention {
   sequence  Int     @default(autoincrement())
   patientId String
   patient   Patient @relation(fields: [patientId], references: [id])
+  ticket    Ticket  @relation(fields: [ticketId], references: [id])
+  ticketId  Int     @unique
+}
+
+model Ticket {
+  id                             Int        @id @default(autoincrement())
+  attention                      Attention?
+  cidDetail                      String
+  cidItem                        String
+  ccodProdServItem               String
+  cdescriptItem                  String
+  cindicadoPsItem                String
+  cvalorVentaUnitaria            String
+  cprecioVentaUnitarioItem       String
+  ccantidadItem                  String
+  cValorItem                     String
+  cigvTotalItem                  String
+  ctotalItem                     String
+  ccodSunatProdServItem          String
+  ccodComercialProdServ          String
+  cid                            String
+  cfecEd                         String
+  ctipDocEmisor                  String
+  capaminoRazonSocialEmisor      String
+  cubigeoEmisor                  String
+  cdireccionEmisor               String
+  cdepartamentoEmisor            String
+  cprovinciaEmisor               String
+  cdistritoEmisor                String
+  cnombreComercialEmisor         String
+  cTipDoc                        String
+  cnroSerie                      String
+  cnroDoc                        String
+  cinfoDocAdquiriente            String
+  ctipDocAdquiriente             String
+  capaminoRazonSocialAdquiriente String
+  cmoneda                        String
+  ctotalOperacionesGrav          String
+  cmontoTotalIgv                 String
+  cmontoTotalPagar               String
+  cmontoTotalPercep              String
+  cleyenda                       String
+  cfecCreaFace                   String
+  ccodigoBarras                  String
+  ccodigpQr                      String
+  isValidated                    Boolean?
+  validatesDate                  DateTime?  @default(now())
+  valitadedBy                    String?
+}
+
+model TestTicket {
+  id         Int    @id @default(autoincrement())
+  jsonString String
 }
