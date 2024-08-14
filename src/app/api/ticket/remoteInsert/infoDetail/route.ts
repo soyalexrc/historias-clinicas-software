@@ -5,10 +5,16 @@ type IncomingData = {
     C_ID: number,
     C_ID_ITEM: number,
     C_DESCRIP_ITEM: string,
+    C_COD_PROD_SERV_ITEM: string,
+    C_INDICADOR_PS_ITEM: string,
+    C_PRECIO_VENTA_UNITARIO_ITEM: number,
+    C_TOTAL_ITEM: number,
+    C_VALOR_ITEM: number,
     C_VALOR_VENTA_UNITARIA: number,
     C_CANTIDAD_ITEM: number,
     C_IGV_TOTAL_ITEM: number,
     C_COD_SUNAT_PROD_SERV_ITEM: string,
+    C_COD_COMERCIAL_PROD_SERV: string,
 }
 
 export async function POST(req: NextRequest) {
