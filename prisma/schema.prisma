@@ -101,7 +101,7 @@ model TicketInfo {
   C_MONEDA                           String
   C_RUCE                             String
   C_MONTO_TOTAL_IGV                  Int
-  C_TOTAL_OPERACIONES_GRAV           Int
+  C_TOTAL_OPERACIONES_GRAV           Int?
   C_MONTO_PAGAR                      Int
   C_MONTO_TOTAL_PERCEP               Int?
   C_LEYENDA                          String?
