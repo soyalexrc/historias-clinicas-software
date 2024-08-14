@@ -3,7 +3,7 @@ import prisma from "@/lib/db/prisma";
 
 type IncomingData = {
     C_ID: number,
-    C_ID_ITEM: string,
+    C_ID_ITEM: number,
     C_DESCRIP_ITEM: string,
     C_VALOR_VENTA_UNITARIA: number,
     C_CANTIDAD_ITEM: number,
