@@ -109,12 +109,18 @@ model TicketInfo {
 }
 
 model TicketInfoDetail {
-  id                         Int    @id @default(autoincrement())
-  C_ID                       Int
-  C_ID_ITEM                  Int
-  C_DESCRIP_ITEM             String
-  C_VALOR_VENTA_UNITARIA     Int
-  C_CANTIDAD_ITEM            Int
-  C_IGV_TOTAL_ITEM           Int
-  C_COD_SUNAT_PROD_SERV_ITEM String
+  id                           Int    @id @default(autoincrement())
+  C_ID                         Int
+  C_ID_ITEM                    Int
+  C_DESCRIP_ITEM               String
+  C_COD_PROD_SERV_ITEM         String
+  C_VALOR_VENTA_UNITARIA       Int
+  C_INDICADOR_PS_ITEM          String
+  C_PRECIO_VENTA_UNITARIO_ITEM Int
+  C_CANTIDAD_ITEM              Int
+  C_IGV_TOTAL_ITEM             Int
+  C_TOTAL_ITEM                 Int
+  C_VALOR_ITEM                 Int
+  C_COD_SUNAT_PROD_SERV_ITEM   String
+  C_COD_COMERCIAL_PROD_SERV    String
 }
