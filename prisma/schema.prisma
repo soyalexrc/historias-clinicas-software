@@ -79,3 +79,39 @@ model TestTicket {
   id         Int    @id @default(autoincrement())
   jsonString String
 }
+
+model TicketInfo {
+  id                                 Int      @id @default(autoincrement())
+  C_ID                               Int
+  C_FEC_ED                           DateTime
+  C_TIP_DOC_EMISOR                   String
+  C_APAMNO_RAZON_SOCIAL_EMISOR       String
+  C_UBIGEO_EMISOR                    String
+  C_DIRECCION_EMISOR                 String
+  C_DEPARTAMENTO_EMISOR              String
+  C_PROVINCIA_EMISOR                 String
+  C_DISTRITO_EMISOR                  String
+  C_NOMBRE_COMERCIAL_EMISOR          String
+  C_TIP_DOC                          String
+  C_NRO_SERIE                        String
+  C_NRO_DOC                          String
+  C_NRO_DOC_ADQUIRIENTE              String
+  C_APAMINO_RAZON_SOCIAL_ADQUIRIENTE String
+  C_MONEDA                           String
+  C_MONTO_TOTAL_IGV                  Int
+  C_MONTO_PAGAR                      Int
+  C_MONTO_TOTAL_PERCEP               Int
+  C_LEYENDA                          String
+  C_FEC_CREA_FACE                    DateTime
+}
+
+model TicketInfoDetail {
+  id                         Int    @id @default(autoincrement())
+  C_ID                       Int
+  C_ID_ITEM                  String
+  C_DESCRIP_ITEM             String
+  C_VALOR_VENTA_UNITARIA     Int
+  C_CANTIDAD_ITEM            Int
+  C_IGV_TOTAL_ITEM           Int
+  C_COD_SUNAT_PROD_SERV_ITEM String
+}
