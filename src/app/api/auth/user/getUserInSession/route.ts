@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
         const { payload } = decodeJwt(token);
         const userId = payload.sub;
         const user = await clerkClient.users.getUser(userId)
-        if (!user) return NextResponse.json({ error: true, message: 'No se encontro al usuario en la base de datos del sistema' }, {status: 400})
+        if (!user) return NextResponse.json({ error: true, message: 'No se encontro al usuario en la base de datos del atencion' }, {status: 400})
         return NextResponse.json(user);
     } catch (error) {
         console.log(error);

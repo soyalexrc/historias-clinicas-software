@@ -81,8 +81,8 @@ model TestTicket {
 }
 
 model TicketInfo {
-  id                                 Int      @id @default(autoincrement())
-  C_ID                               Int
+  id                                 Int       @id @default(autoincrement())
+  C_ID                               Int       @unique
   C_FEC_ED                           DateTime
   C_TIP_DOC_EMISOR                   String?
   C_APAMNO_RAZON_SOCIAL_EMISOR       String
@@ -106,6 +106,9 @@ model TicketInfo {
   C_MONTO_TOTAL_PERCEP               Int?
   C_LEYENDA                          String?
   C_FEC_CREA_FACE                    DateTime
+  isValidated                        Boolean?
+  validatedDate                      DateTime?
+  valitadedBy                        String?
 }
 
 model TicketInfoDetail {
@@ -123,4 +126,62 @@ model TicketInfoDetail {
   C_VALOR_ITEM                 Int
   C_COD_SUNAT_PROD_SERV_ITEM   String
   C_COD_COMERCIAL_PROD_SERV    String
+}
+
+model Service2 {
+  id                    Int       @id @default(autoincrement())
+  RucE                  String?
+  Cd_Srv                String    @unique
+  CodCo                 String?
+  Nombre                String?
+  Descrip               String?
+  NCorto                String?
+  Cta1                  String?
+  Cta2                  String?
+  Img                   String?
+  Cd_GS                 String?
+  Cd_CGP                String?
+  Cd_CC                 String?
+  Cd_SC                 String?
+  Cd_SS                 String?
+  IC_TipServ            String?
+  UsuCrea               String?
+  UsuMdf                String?
+  FecReg                DateTime?
+  FecMdf                DateTime?
+  Estado                String?
+  CA01                  String?
+  CA02                  String?
+  CA03                  String?
+  CA04                  String?
+  CA05                  String?
+  CA06                  String?
+  CA07                  String?
+  CA08                  String?
+  CA09                  String?
+  CA10                  String?
+  Cta3                  String?
+  Cta4                  String?
+  Cta5                  String?
+  Cta6                  String?
+  Cta7                  String?
+  Cta8                  String?
+  IB_LF                 String?
+  IB_ActivoFijo         String?
+  Cta9                  String?
+  Cta10                 String?
+  Cta11                 String?
+  Cta12                 String?
+  C_IB_LC               String?
+  C_CD_SRV_INAFECTO     String?
+  C_CD_SRV_AFECTO       String?
+  C_IB_SOBRE_TASA       String?
+  C_COD_BBSS            String?
+  C_CD_SERV_ADICIONAL   String?
+  C_PORCENTAJE_AFECTADO String?
+  C_IB_ES_OBLIGATORIO   String?
+  C_IB_INCLUYE_IGV      String?
+  C_IB_CRM              String?
+  C_CODIGO_HOMOLOGACION String?
+  C_IB_MULTIEMPRESA     String?
 }

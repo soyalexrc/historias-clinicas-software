@@ -1,7 +1,8 @@
 import {MainNavigationMenu} from "@/components/layout/MainNavigationMenu";
 import MainFooter from "@/components/layout/MainFooter";
 import {currentUser} from "@clerk/nextjs/server";
-import {redirect} from "next/navigation";
+import {redirect, usePathname} from "next/navigation";
+import {headers} from "next/headers";
 
 export default async function Layout({children}: Readonly<{ children: React.ReactNode }>) {
     const user = await currentUser();
@@ -18,7 +19,7 @@ export default async function Layout({children}: Readonly<{ children: React.Reac
             </div>
             {user && <MainFooter
                 type={user.publicMetadata?.type as string}
-                role={user.publicMetadata?.role}
+                role={user.publicMetadata?.role as string}
                 lastName={user.lastName as string}
                 firstName={user.firstName as string}
                 serviceTitle={user.publicMetadata?.serviceTitle as string}

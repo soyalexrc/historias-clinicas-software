@@ -1,6 +1,6 @@
 'use client';
 
-import {CalendarClock, CircleUserRound, Contact, Crown, Hospital, Stethoscope} from "lucide-react";
+import {CalendarClock, CircleUserRound, Contact, Crown, FileSpreadsheet, Hospital, Stethoscope} from "lucide-react";
 import {format} from "date-fns";
 import {es} from "date-fns/locale";
 import {useEffect, useState} from "react";
@@ -24,13 +24,16 @@ export default function MainFooter(props: Props) {
         const weekday = format(today, 'EEEE', {locale});
         const monthDay = format(today, 'd MMMM', {locale});
         const year = format(today, 'yyyy', {locale});
-        const time = format(today, 'h:mm:ss a', {locale});
-        setFullDate(`${weekday}, ${monthDay} de ${year} ${time}`);
+        // const time = format(today, 'h:mm:ss a', {locale});
+        // setFullDate(`${weekday}, ${monthDay} de ${year} ${time}`);
+        setFullDate(`${weekday}, ${monthDay} de ${year} `);
     }
 
     useEffect(() => {
-        const intervalId = setInterval(getRealTimeDateTime, 1000); // Update every second
-        return () => clearInterval(intervalId);
+        getRealTimeDateTime();
+        // const intervalId = setInterval(getRealTimeDateTime, 1000); // Update every second
+        // TODO: evaluar si este intervalo es necesario....
+        // return () => clearInterval(intervalId);
     }, []);
 
     return (
@@ -39,19 +42,45 @@ export default function MainFooter(props: Props) {
                 <CircleUserRound size={20}/>
                 <p className='text-xs'>{props.firstName} {props.lastName}</p>
             </div>
+
+            {
+                <GetRoleCell
+                    role={props.role}
+                    serviceTitle={props.serviceTitle}
+                    type={props.type}
+                />
+            }
+
             <div className='flex items-center gap-2 border-r-2 px-6'>
                 <Hospital size={20}/>
                 <p className='text-xs'>Policlinico Brena</p>
             </div>
+
+            <div className='flex items-center gap-2 border-r-2 px-6'>
+                <Contact size={20} />
+                <p className="text-xs">{props.username}</p>
+            </div>
+            <div className='flex items-center gap-2 px-6'>
+                <CalendarClock size={20}/>
+                <p className="text-xs">{fullDate || '...'}</p>
+            </div>
+        </footer>
+    )
+}
+
+function GetRoleCell({ role, serviceTitle, type }: { role: string, serviceTitle: string | undefined, type: string | undefined }) {
+
+    if (role === 'attention') {
+        return (
             <div className='flex items-center gap-2 border-r-2 px-6 relative'>
                 <Stethoscope size={20}/>
-                <p className="text-xs">{props.serviceTitle}</p>
+                <p className="text-xs">{serviceTitle}</p>
                 {
-                    props.type === 'chief' && props.role === 'attention' &&
+                    type === 'chief' &&
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger>
-                                <Crown size={15} className='absolute right-2 top-[-6px] text-yellow-500 rotate-45' />
+                                <Crown size={15} className='absolute right-2 top-[-6px] text-yellow-500 rotate-45'/>
                             </TooltipTrigger>
                             <TooltipContent>
                                 <p>Este icono indica que eres jefe de servicio.</p>
@@ -60,14 +89,22 @@ export default function MainFooter(props: Props) {
                     </TooltipProvider>
                 }
             </div>
+        )
+    }
+
+    if (role === 'reporting') {
+        return (
             <div className='flex items-center gap-2 border-r-2 px-6'>
-                <Contact size={20} />
-                <p className="text-xs">{props.username}</p>
+                <FileSpreadsheet size={20}/>
+                <p className="text-xs">Reportes</p>
             </div>
-            <div className='flex items-center gap-2 px-6 min-w-[290px]'>
-                <CalendarClock size={20}/>
-                <p className="text-xs">{fullDate || '...'}</p>
-            </div>
-        </footer>
+        )
+    }
+
+    return (
+        <div className='flex items-center gap-2 border-r-2 px-6'>
+            <CircleUserRound size={20}/>
+            <p className="text-xs">default</p>
+        </div>
     )
 }

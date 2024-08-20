@@ -53,7 +53,7 @@ export default function LoginForm() {
                         router.replace('/administracion');
                         break;
                     case "attention":
-                        router.replace('/sistema');
+                        router.replace('/atencion');
                 }
             }
         } catch (err: any) {

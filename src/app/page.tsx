@@ -9,15 +9,19 @@ export default async function Page() {
     }
 
     if (user?.publicMetadata.role === 'admin') {
-        redirect('/administracion')
+        redirect('/sistema/administracion')
     }
 
     if (user?.publicMetadata.role === 'attention') {
-        redirect('/sistema')
+        redirect('/sistema/atencion')
     }
 
     if (user?.publicMetadata.role === 'cashier') {
-        redirect('/filiacion')
+        redirect('/sistema/filiacion')
+    }
+
+    if (user?.publicMetadata.role === 'reporting') {
+        redirect('/sistema/reportes')
     }
 
     return null;

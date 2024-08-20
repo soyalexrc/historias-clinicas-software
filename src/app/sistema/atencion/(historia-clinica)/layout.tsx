@@ -9,11 +9,11 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
     return (
         <div className='h-screen-with-footer overflow-hidden'>
             <TransactionsToolbar />
-            <div className='grid grid-cols-11'>
-                <div className='col-span-2 p-2 h-full'>
+            <div className='flex'>
+                <div className='p-2 h-full w-[280px]'>
                     {user && <RealTimePatients userService={user?.publicMetadata?.serviceValue as string} />}
                 </div>
-                <div className='col-span-9'>
+                <div className=''>
                     {children}
                 </div>
             </div>
