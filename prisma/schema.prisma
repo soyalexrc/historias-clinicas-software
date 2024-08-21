@@ -185,3 +185,15 @@ model Service2 {
   C_CODIGO_HOMOLOGACION String?
   C_IB_MULTIEMPRESA     String?
 }
+
+model ManualSearch {
+  id            Int                @id @default(autoincrement())
+  C_ID          String             @unique
+  dateConsulted DateTime           @default(now())
+  status        ManualSearchStatus @default(PENDING)
+}
+
+enum ManualSearchStatus {
+  PENDING
+  NOT_FOUND
+}
