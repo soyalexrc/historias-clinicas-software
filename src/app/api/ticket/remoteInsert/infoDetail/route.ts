@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
         const service = await prisma.service2.findUnique(({
             where: {
-                Cd_Srv: newTicket.C_COD_SUNAT_PROD_SERV_ITEM
+                Cd_Srv: newTicket.C_COD_PROD_SERV_ITEM
             }
         }))
 
