@@ -43,13 +43,13 @@ export default function MainFooter(props: Props) {
                 <p className='text-xs'>{props.firstName} {props.lastName}</p>
             </div>
 
-            {
-                <GetRoleCell
-                    role={props.role}
-                    serviceTitle={props.serviceTitle}
-                    type={props.type}
-                />
-            }
+
+            <GetRoleCell
+                role={props.role}
+                serviceTitle={props.serviceTitle}
+                type={props.type}
+            />
+
 
             <div className='flex items-center gap-2 border-r-2 px-6'>
                 <Hospital size={20}/>
@@ -57,7 +57,7 @@ export default function MainFooter(props: Props) {
             </div>
 
             <div className='flex items-center gap-2 border-r-2 px-6'>
-                <Contact size={20} />
+                <Contact size={20}/>
                 <p className="text-xs">{props.username}</p>
             </div>
             <div className='flex items-center gap-2 px-6'>
@@ -68,7 +68,11 @@ export default function MainFooter(props: Props) {
     )
 }
 
-function GetRoleCell({ role, serviceTitle, type }: { role: string, serviceTitle: string | undefined, type: string | undefined }) {
+function GetRoleCell({role, serviceTitle, type}: {
+    role: string,
+    serviceTitle: string | undefined,
+    type: string | undefined
+}) {
 
     if (role === 'attention') {
         return (
@@ -83,7 +87,7 @@ function GetRoleCell({ role, serviceTitle, type }: { role: string, serviceTitle:
                                 <Crown size={15} className='absolute right-2 top-[-6px] text-yellow-500 rotate-45'/>
                             </TooltipTrigger>
                             <TooltipContent>
-                                <p>Este icono indica que eres jefe de servicio.</p>
+                                <p>Este icono indica que eres jefe de area.</p>
                             </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
@@ -94,9 +98,22 @@ function GetRoleCell({ role, serviceTitle, type }: { role: string, serviceTitle:
 
     if (role === 'reporting') {
         return (
-            <div className='flex items-center gap-2 border-r-2 px-6'>
+            <div className='flex items-center gap-2 border-r-2 px-6 relative'>
                 <FileSpreadsheet size={20}/>
                 <p className="text-xs">Reportes</p>
+                {
+                    type === 'chief' &&
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Crown size={15} className='absolute right-2 top-[-6px] text-yellow-500 rotate-45'/>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Este icono indica que eres jefe de area.</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                }
             </div>
         )
     }

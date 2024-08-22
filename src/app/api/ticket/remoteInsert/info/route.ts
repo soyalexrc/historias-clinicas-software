@@ -62,7 +62,10 @@ export async function POST(req: NextRequest) {
                 C_UBIGEO_EMISOR: body[0].C_UBIGEO_EMISOR,
                 C_NOMBRE_COMERCIAL_EMISOR: body[0].C_NOMBRE_COMERCIAL_EMISOR,
                 isValidated: false,
-                C_FEC_ED: formatDateString(body[0].C_FEC_ED)
+                C_FEC_ED: formatDateString(body[0].C_FEC_ED),
+                services: {
+                    set: []
+                }
             }
         })
 

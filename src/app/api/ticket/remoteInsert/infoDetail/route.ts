@@ -24,6 +24,26 @@ export async function POST(req: NextRequest) {
             data: body[0]
         })
 
+        const service = await prisma.service2.findUnique(({
+            where: {
+                Cd_Srv: newTicket.C_COD_SUNAT_PROD_SERV_ITEM
+            }
+        }))
+
+        if (service) {
+            await prisma.ticketInfo.update({
+                data: {
+                    services: {
+                        push:  service?.CA02 as string
+                    }
+                },
+                where: {
+                    C_ID: newTicket.C_ID
+                }
+            })
+        }
+
+
         return NextResponse.json({message: 'Se registro el ticket remoto con exito!'})
     } catch (error) {
         console.error(error);

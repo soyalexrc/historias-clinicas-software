@@ -109,6 +109,7 @@ model TicketInfo {
   isValidated                       Boolean?
   validatedDate                     DateTime?
   valitadedBy                       String?
+  services                          String[]
 }
 
 model TicketInfoDetail {

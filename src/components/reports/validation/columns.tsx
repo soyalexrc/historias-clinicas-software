@@ -11,7 +11,7 @@ import {
 import {Button} from "@/components/ui/button";
 import {MoreHorizontal, ArrowUpDown} from "lucide-react";
 import {Checkbox} from "@/components/ui/checkbox"
-import {TicketForReports, TicketForReportsDetail} from "@/lib/interfaces/Ticket";
+import {TicketForReports, Detail, Service} from "@/lib/interfaces/Ticket";
 import {format} from "date-fns";
 import {es} from 'date-fns/locale';
 import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
@@ -93,6 +93,24 @@ export const columns: ColumnDef<TicketForReports>[] = [
         }
     },
     {
+        accessorKey: "service",
+        header: "Servicio(s)",
+        cell: ({row}) => {
+            const services = row.original.services
+            return (
+                <div>
+                    {
+                        services.map((service, index) => (
+                            <div key={service} className="text-sm">
+                                - {service}
+                            </div>
+                        ))
+                    }
+                </div>
+            )
+        },
+    },
+    {
         accessorKey: "C_MONTO_PAGAR",
         header: () => <div className="text-right">Monto</div>,
         cell: ({row}) => {
@@ -110,9 +128,9 @@ export const columns: ColumnDef<TicketForReports>[] = [
         cell: ({row}) => {
             const ticket = row.original;
 
-            function calculateTotal(details: TicketForReportsDetail[]): number {
+            function calculateTotal(details: Detail[]): number {
                 return details.reduce((acc, detail) => {
-                    return acc + parseFloat(detail.C_TOTAL_ITEM)
+                    return acc + detail.C_TOTAL_ITEM
                 }, 0)
             }
 
@@ -162,7 +180,7 @@ export const columns: ColumnDef<TicketForReports>[] = [
                                     ticket.details.map(detail => (
                                         <div key={detail.id} className="grid grid-cols-12 mb-1">
                                             <span className="text-xs text-gray-600 col-span-1">{detail.C_CANTIDAD_ITEM} x</span>
-                                            <span className="text-xs text-gray-600 col-span-6">{detail.C_DESRIP_ITEM}</span>
+                                            <span className="text-xs text-gray-600 col-span-6">{detail.C_DESCRIP_ITEM}</span>
                                             <span className="text-xs text-gray-600 col-span-5 text-right">{detail.C_TOTAL_ITEM}</span>
                                         </div>
                                     ))
