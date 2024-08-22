@@ -24,23 +24,40 @@ export async function POST(req: NextRequest) {
             data: body[0]
         })
 
+        console.log('newTicket', newTicket);
+
         const service = await prisma.service2.findUnique(({
             where: {
                 Cd_Srv: newTicket.C_COD_SUNAT_PROD_SERV_ITEM
             }
         }))
 
-        if (service) {
-            await prisma.ticketInfo.update({
-                data: {
-                    services: {
-                        push:  service?.CA02 as string
+        console.log('service', service);
+
+
+        if (service && service.CA02) {
+            console.log('CA02', service.CA02);
+            const ticket = await prisma.ticketInfo.findUnique({ where: { C_ID: newTicket.C_ID } });
+            console.log('ticket', ticket);
+            if (ticket) {
+                const services = ticket.services;
+
+                console.log('services 1', services);
+
+
+                services.push(service?.CA02)
+
+                console.log('services 2', services);
+
+                await prisma.ticketInfo.update({
+                    data: {
+                        services
+                    },
+                    where: {
+                        id: ticket.id
                     }
-                },
-                where: {
-                    C_ID: newTicket.C_ID
-                }
-            })
+                })
+            }
         }
 
 
