@@ -3,7 +3,7 @@
 import * as React from "react"
 import {LogOut} from 'lucide-react';
 import {Button} from "@/components/ui/button";
-import {useRouter} from "next/navigation";
+import {redirect, useRouter} from "next/navigation";
 import {useAuth, useClerk} from "@clerk/nextjs";
 import {useAppDispatch} from "@/lib/store/hooks";
 import {kickOut} from "@/lib/store/features/auth/state/authSlice";
@@ -17,7 +17,7 @@ export function MainNavigationMenu() {
         dispatch(kickOut())
         await signOut({
             redirectUrl: '/ingreso'
-        })
+        });
     }
 
     function getRole(): string {
@@ -44,7 +44,7 @@ export function MainNavigationMenu() {
                     getRole() === 'reporting' &&
                     <>
                         <Button variant='ghost' onClick={() => router.push('/sistema/reportes')}>Reportes</Button>
-                        <Button variant='ghost' onClick={() => router.push('/sistema/reportes/validacion-tickets')}>Validacion de tickets</Button>
+                        {/*<Button variant='ghost' onClick={() => router.push('/sistema/reportes/validacion-tickets')}>Validacion de tickets</Button>*/}
                     </>
                 }
                 <Button variant='ghost' onClick={() => router.push('/sistema/configuracion')}>Configuracion</Button>

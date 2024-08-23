@@ -15,6 +15,7 @@ import {TicketForReports, Detail, Service} from "@/lib/interfaces/Ticket";
 import {format} from "date-fns";
 import {es} from 'date-fns/locale';
 import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
+import {formatDateForTable} from "@/lib/helpers/date";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Payment = {
@@ -89,7 +90,7 @@ export const columns: ColumnDef<TicketForReports>[] = [
         header: "Fecha de emisión",
         cell: ({row}) => {
             const date = row.original.C_FEC_CREA_FACE;
-            return <div className="font-medium">{format(date, 'PP pp', {locale: es})}</div>
+            return <div className="font-medium">{formatDateForTable(date)}</div>
         }
     },
     {

@@ -14,3 +14,26 @@ export function formatDateString(dateString: string): Date {
     }
     return date;
 }
+
+export function formatDateForTable(date: Date | string) {
+    const [d, t] = date.toString().split('T')
+    return `${formatDaysMonthYear(d)} ${formatTime(t.substring(0, 8))}`;
+}
+
+export function formatDaysMonthYear(date: string) {
+    const year = date.split('-')[0];
+    const month = date.split('-')[1];
+    const day = date.split('-')[2];
+    return `${day}/${month}/${year}`;
+}
+
+export function formatTime(time: string) {
+    const hours = time.split(':')[0];
+    const minutes = time.split(':')[1];
+    const seconds = time.split(':')[2];
+
+    if (Number(hours) > 12) {
+        return `${Number(hours) - 12}:${minutes}:${seconds} PM`;
+    }
+    return `${hours}:${minutes}:${seconds} AM`;
+}

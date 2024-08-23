@@ -5,7 +5,6 @@ import {currentUser} from "@clerk/nextjs/server";
 
 export default async function Layout({ children }: Readonly<{ children: ReactNode }>) {
     const user = await currentUser();
-    console.log(user);
     return (
         <div className='h-screen-with-footer overflow-hidden'>
             <TransactionsToolbar />
@@ -13,7 +12,7 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
                 <div className='p-2 h-full w-[280px]'>
                     {user && <RealTimePatients userService={user?.publicMetadata?.serviceValue as string} />}
                 </div>
-                <div className=''>
+                <div className='flex-1'>
                     {children}
                 </div>
             </div>

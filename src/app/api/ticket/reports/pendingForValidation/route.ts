@@ -51,9 +51,9 @@ export async function GET(req: NextRequest) {
         }
     }
 
-    whereClause['isValidated'] = {
-        not: true
-    };
+    // whereClause['isValidated'] = {
+    //     not: true
+    // };
 
     // whereClause['isValidated'] = true
 

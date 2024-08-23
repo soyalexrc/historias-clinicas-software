@@ -24,6 +24,9 @@ export default function RealTimePatients({userService}: {userService: string}) {
         setLoading(true);
         const q = query(collection(db, userService));
         const unsub = onSnapshot(q, (querySnapshot) => {
+            if (querySnapshot.docs.length < 1) {
+                setLoading(false)
+            }
             querySnapshot.forEach((doc) => {
                 const date = doc.data().datetime.toDate();
                 const data = doc.data();

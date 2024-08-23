@@ -55,6 +55,11 @@ export default function ReportsFilters() {
         } else {
             params.delete('C_NRO_DOC_ADQUIRIENTE');
         }
+        if (values.apamnoRazonSocialAdquiriente) {
+            params.set('C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE', values.apamnoRazonSocialAdquiriente);
+        } else {
+            params.delete('C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE');
+        }
 
 
 
