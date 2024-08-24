@@ -101,7 +101,7 @@ export const columns: ColumnDef<TicketForReports>[] = [
             return (
                 <div>
                     {
-                        services.map((service, index) => (
+                        services?.map((service, index) => (
                             <div key={service} className="text-sm">
                                 - {service}
                             </div>
