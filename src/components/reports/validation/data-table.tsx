@@ -29,6 +29,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {Eye} from "lucide-react";
 import {DataTablePagination} from "@/components/reports/validation/pagination";
+import {validateTicketsAction} from "@/actions/tickets";
+import {ClerkUser} from "@/lib/interfaces/User";
+import {toast} from "sonner"
+import {useRouter} from "next/navigation";
+import {Ticket} from "@prisma/client";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -39,7 +46,7 @@ export function DataTable<TData, TValue>({
                                              columns,
                                              data,
                                          }: DataTableProps<TData, TValue>) {
-
+    const router = useRouter();
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
@@ -62,11 +69,36 @@ export function DataTable<TData, TValue>({
         },
     })
 
+    async function validateTickets() {
+        // @ts-ignore
+        const selectedIds: number[] = table.getFilteredSelectedRowModel().rows.map(r => r.original.id);
+        const userInSessionRaw = await fetch('/api/auth/user/getUserInSession');
+        const userInSession = await userInSessionRaw.json() as ClerkUser;
+        const userFullName = userInSession.firstName + ' ' + userInSession.lastName;
+        const response = await validateTicketsAction(selectedIds, userFullName);
+
+        toast(response.message);
+
+        if (response.success) {
+            router.refresh();
+            setRowSelection({});
+        }
+    }
+
+    console.log(!(table.getFilteredSelectedRowModel().rows.length > 0 && table.getFilteredSelectedRowModel().rows.every(r => !(r.original as Ticket).isValidated)))
 
     return (
         <div>
             <div className="flex justify-end mb-4 gap-2">
-                <Button disabled={table.getFilteredSelectedRowModel().rows.length < 1} variant="success">
+                <Button disabled={table.getFilteredSelectedRowModel().rows.length < 1}>
+                    Exportar Excel
+                </Button>
+                <Button disabled={table.getFilteredSelectedRowModel().rows.length < 1}>
+                    Exportar PDF
+                </Button>
+                <Button
+                    disabled={table.getFilteredSelectedRowModel().rows.length < 1 || table.getFilteredSelectedRowModel().rows.some(r => (r.original as Ticket).isValidated)}
+                    onClick={validateTickets} variant="success">
                     Validar
                 </Button>
                 <DropdownMenu>
@@ -143,7 +175,7 @@ export function DataTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
-            <DataTablePagination table={table} />
+            <DataTablePagination table={table}/>
         </div>
     )
 }
