@@ -1,7 +1,6 @@
 import {currentUser} from "@clerk/nextjs/server";
 import {MainNavigationMenu} from "@/components/layout/MainNavigationMenu";
 import MainFooter from "@/components/layout/MainFooter";
-import {headers} from "next/headers";
 
 export default async function Layout({children}: Readonly<{ children: React.ReactNode }>) {
     const user = await currentUser();

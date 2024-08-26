@@ -14,6 +14,7 @@ export async function GET(req: NextRequest) {
     const nroDocAdquiriente = params.get('C_NRO_DOC_ADQUIRIENTE');
     const apamnoRazonSocialAdquiriente = params.get('C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE');
     const service = params.get('service');
+    const isValidated = params.get('isValidated');
 
     const whereClause: any = {};
 
@@ -51,11 +52,19 @@ export async function GET(req: NextRequest) {
         }
     }
 
-    // whereClause['isValidated'] = {
-    //     not: true
-    // };
-
-    // whereClause['isValidated'] = true
+    if (isValidated) {
+        if (JSON.parse(isValidated)) {
+            whereClause['isValidated'] = true;
+        } else {
+            whereClause['isValidated'] = {
+                not: true
+            };
+        }
+    } else {
+        // whereClause['isValidated'] = {
+        //     not: true
+        // };
+    }
 
     console.log(whereClause)
 

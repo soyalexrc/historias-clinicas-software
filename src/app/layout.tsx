@@ -2,6 +2,7 @@ import type {Metadata} from "next";
 import {Inter} from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -14,6 +15,7 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
     return (
         <html lang="en">
         <Providers>
+            <Toaster />
             <body className={inter.className}>{children}</body>
         </Providers>
         </html>

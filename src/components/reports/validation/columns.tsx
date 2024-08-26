@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
-import {MoreHorizontal, ArrowUpDown} from "lucide-react";
+import {MoreHorizontal, ArrowUpDown, CheckCheck, TriangleAlert} from "lucide-react";
 import {Checkbox} from "@/components/ui/checkbox"
 import {TicketForReports, Detail, Service} from "@/lib/interfaces/Ticket";
 import {format} from "date-fns";
@@ -84,6 +84,19 @@ export const columns: ColumnDef<TicketForReports>[] = [
     {
         accessorKey: "C_NRO_DOC_ADQUIRIENTE",
         header: "DNI de paciente",
+    },
+    {
+        accessorKey: "isValidated",
+        header: "Estado validado",
+        cell: ({row}) => {
+            const isValidated = row.original.isValidated;
+            return (
+                <div className={`flex items-center justify-center px-2 w-[101px] gap-2 border-2 rounded-full ${isValidated ? 'border-green-500 bg-green-50' : 'border-yellow-500 bg-yellow-50'}`}>
+                    {isValidated ? <CheckCheck size={16} className="text-green-800" /> : <TriangleAlert size={16} className="text-yellow-800" />}
+                    <p className={`${isValidated ? 'text-green-800' : 'text-yellow-800'} text-xs`}>{isValidated ? "Validado" : "Pendiente"}</p>
+                </div>
+            )
+        },
     },
     {
         accessorKey: "C_FEC_CREA_FACE",

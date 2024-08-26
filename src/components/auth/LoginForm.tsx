@@ -47,18 +47,19 @@ export default function LoginForm() {
             });
             if (setActive) {
                 await setActive({session: completeSignIn?.createdSessionId})
-                const data = await fetch('/api/auth/user/getUserInSession');
-                const user = await data.json() as ClerkUser;
-                switch (user.publicMetadata.role) {
-                    case "cashier":
-                        router.replace('/sistema/filiacion');
-                        break;
-                    case "admin":
-                        router.replace('/sistema/administracion');
-                        break;
-                    case "attention":
-                        router.replace('/sistema/atencion');
-                }
+
+                // const data = await fetch('/api/auth/user/getUserInSession');
+                // const user = await data.json() as ClerkUser;
+                // switch (user.publicMetadata.role) {
+                //     case "cashier":
+                //         router.replace('/sistema/filiacion');
+                //         break;
+                //     case "admin":
+                //         router.replace('/sistema/administracion');
+                //         break;
+                //     case "attention":
+                //         router.replace('/sistema/atencion');
+                // }
             }
         } catch (err: any) {
             console.log(err.errors)
