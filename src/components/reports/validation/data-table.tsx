@@ -35,6 +35,7 @@ import {toast} from "sonner"
 import {useRouter} from "next/navigation";
 import {Ticket} from "@prisma/client";
 import generateTicket from "@/lib/helpers/reports/reportTable";
+import {TicketWithDetails} from "@/app/api/ticket/reports/pendingForValidation/route";
 
 
 interface DataTableProps<TData, TValue> {
@@ -86,7 +87,9 @@ export function DataTable<TData, TValue>({
     }
 
     async function generateReport(output: string) {
-        const response: any = await generateTicket(output);
+        const selectedRows: TicketWithDetails[] = table.getFilteredSelectedRowModel().rows.map(r => r.original as TicketWithDetails);
+
+        const response: any = await generateTicket(output, selectedRows);
 
         if (!response?.success) {
             alert(response?.message);

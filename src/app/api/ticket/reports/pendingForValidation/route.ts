@@ -3,7 +3,7 @@ import prisma from "@/lib/db/prisma";
 import {TicketInfo, TicketInfoDetail} from "@prisma/client";
 
 interface TicketDetailWithService extends TicketInfoDetail {service?: any}
-interface TicketWithDetails extends TicketInfo {details?: any[]}
+export interface TicketWithDetails extends TicketInfo {details?: any[]}
 
 export async function GET(req: NextRequest) {
     const params = req.nextUrl.searchParams;
