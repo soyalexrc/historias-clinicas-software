@@ -74,7 +74,7 @@ export default function ReportsFilters() {
 
     }
     return (
-        <div className="flex flex-col gap-3 fixed top-30 left-0 h-full bg-white z-10 p-6 min-w-[260px]">
+        <div className="flex flex-col gap-3 h-full p-6 min-w-[260px]">
             <span className="mb-5"/>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">

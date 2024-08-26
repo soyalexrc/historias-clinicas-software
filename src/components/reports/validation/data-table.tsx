@@ -34,7 +34,7 @@ import {ClerkUser} from "@/lib/interfaces/User";
 import {toast} from "sonner"
 import {useRouter} from "next/navigation";
 import {Ticket} from "@prisma/client";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import generateTicket from "@/lib/helpers/reports/reportTable";
 
 
 interface DataTableProps<TData, TValue> {
@@ -85,15 +85,32 @@ export function DataTable<TData, TValue>({
         }
     }
 
-    console.log(!(table.getFilteredSelectedRowModel().rows.length > 0 && table.getFilteredSelectedRowModel().rows.every(r => !(r.original as Ticket).isValidated)))
+    async function generateReport(output: string) {
+        const response: any = await generateTicket(output);
+
+        if (!response?.success) {
+            alert(response?.message);
+            return;
+        }
+        //
+        // if (output === 'b64') {
+        //     setBase64(response?.content ?? '');
+        // }
+
+        // setMessage(response?.message);
+
+        // setTimeout(() => {
+        //     setMessage('');
+        // }, 2000);
+    }
 
     return (
         <div>
             <div className="flex justify-end mb-4 gap-2">
-                <Button disabled={table.getFilteredSelectedRowModel().rows.length < 1}>
+                <Button disabled={table.getFilteredSelectedRowModel().rows.length < 1} onClick={() => generateReport('print')}>
                     Exportar Excel
                 </Button>
-                <Button disabled={table.getFilteredSelectedRowModel().rows.length < 1}>
+                <Button disabled={table.getFilteredSelectedRowModel().rows.length < 1} onClick={() => generateReport('print')}>
                     Exportar PDF
                 </Button>
                 <Button

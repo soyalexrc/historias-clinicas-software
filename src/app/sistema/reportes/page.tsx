@@ -12,7 +12,7 @@ export default function Page({ searchParams }: { searchParams: SearchParams }) {
     return (
         <div className="p-6 ">
             <h1 className="text-2xl mb-6">Reportes</h1>
-            <div className="relative">
+            <div className="flex">
                 <ReportsFilters/>
                 <Suspense fallback={<Loader />} key={JSON.stringify(searchParams)}>
                     <TableWrapper query={searchParams} />
@@ -48,7 +48,7 @@ async function TableWrapper({ query }: { query: SearchParams }) {
     }
 
     return (
-        <div className="ml-[250px] pb-10">
+        <div className="pb-10 flex-1">
             <p className="text-sm text-gray-500"><b>{tickets.length ?? 0}</b> Resultado(s) encontrado(s).</p>
             <ReportsValidationDataTable columns={reportsValidationColumns} data={tickets}/>
         </div>
