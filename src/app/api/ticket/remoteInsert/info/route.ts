@@ -36,6 +36,7 @@ type IncomingData = {
 export async function POST(req: NextRequest) {
     try {
         const body: IncomingData[] = await req.json();
+        console.log('incomingData', body)
         const newTicket = await prisma.ticketInfo.create({
             data: {
                 C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE: body[0].C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE,
@@ -68,6 +69,9 @@ export async function POST(req: NextRequest) {
                 }
             }
         })
+
+        console.log('inserted ticket info', newTicket);
+
 
         return NextResponse.json({message: 'Se registro el ticket remoto con exito!'})
     } catch (error) {

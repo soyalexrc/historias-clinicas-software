@@ -4,7 +4,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import React from "react";
-import { z } from "zod"
+import {z} from "zod"
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
@@ -19,7 +19,8 @@ const formSchema = z.object({
     nroDoc: z.string({required_error: 'Este campo es requerido'}).min(8, 'debe tener al menos 8 caracteres').max(11, ' debe tener como máximo 11 caracteres').optional(),
     apamnoRazonSocialAdquiriente: z.string().optional(),
     nroDocAdquiriente: z.string().optional(),
-    service: z.string().optional()
+    service: z.string().optional(),
+    status: z.string().optional(),
 })
 
 export default function ReportsFilters() {
@@ -29,6 +30,9 @@ export default function ReportsFilters() {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
+        defaultValues: {
+            status: 'All'
+        }
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -61,6 +65,11 @@ export default function ReportsFilters() {
             params.delete('C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE');
         }
 
+        if (values.status) {
+            params.set('status', values.status);
+        } else {
+            params.delete('status');
+        }
 
 
         if (values.dateTo && values.dateFrom && values.dateFrom) {
@@ -73,6 +82,7 @@ export default function ReportsFilters() {
         router.push(pathname + '?' + params.toString());
 
     }
+
     return (
         <div className="flex flex-col gap-3 h-full p-6 min-w-[260px]">
             <span className="mb-5"/>
@@ -81,7 +91,7 @@ export default function ReportsFilters() {
                     <FormField
                         control={form.control}
                         name="dateFrom"
-                        render={({ field }) => (
+                        render={({field}) => (
                             <FormItem>
                                 <div className="flex items-center justify-between">
                                     <FormLabel>Filtro de fechas</FormLabel>
@@ -98,14 +108,14 @@ export default function ReportsFilters() {
                                         onChange={field.onChange}
                                     />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage/>
                             </FormItem>
                         )}
                     />
                     <FormField
                         control={form.control}
                         name="dateTo"
-                        render={({ field }) => (
+                        render={({field}) => (
                             <FormItem>
                                 <FormControl>
                                     <DatePicker
@@ -115,16 +125,16 @@ export default function ReportsFilters() {
                                         onChange={field.onChange}
                                     />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage/>
                             </FormItem>
                         )}
                     />
-                    <div className="w-full h-2 border-b-2 border-gray-200" />
+                    <div className="w-full h-2 border-b-2 border-gray-200"/>
                     <div className="flex items-end w-full gap-2">
                         <FormField
                             control={form.control}
                             name="nroSerie"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem className="w-full">
                                     <FormLabel>Nro de serie</FormLabel>
                                     <FormControl>
@@ -133,7 +143,7 @@ export default function ReportsFilters() {
                                             onValueChange={field.onChange}
                                         >
                                             <SelectTrigger className="h-8 w-full">
-                                                <SelectValue  className="h-8" placeholder="" />
+                                                <SelectValue className="h-8" placeholder=""/>
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="BC01">BC01</SelectItem>
@@ -145,12 +155,13 @@ export default function ReportsFilters() {
                                             </SelectContent>
                                         </Select>
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage/>
                                 </FormItem>
                             )}
                         />
-                        <Button type="button" onClick={() => form.setValue('nroSerie', '')} variant='destructive' className="h-8" size="icon">
-                            <SearchX size={20} />
+                        <Button type="button" onClick={() => form.setValue('nroSerie', '')} variant='destructive'
+                                className="h-8" size="icon">
+                            <SearchX size={20}/>
                         </Button>
                     </div>
                     <FormField
@@ -160,7 +171,7 @@ export default function ReportsFilters() {
                             <FormItem>
                                 <FormLabel>Nro de ticket</FormLabel>
                                 <FormControl>
-                                    <Input  className="h-8 w-full" placeholder="" {...field} />
+                                    <Input className="h-8 w-full" placeholder="" {...field} />
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
@@ -222,12 +233,38 @@ export default function ReportsFilters() {
                         </Button>
                     </div>
 
+                    <FormField
+                        control={form.control}
+                        name="status"
+                        render={({field}) => (
+                            <FormItem className="w-full">
+                                <FormLabel>Estatus</FormLabel>
+                                <FormControl>
+                                    <Select
+                                        value={field.value}
+                                        onValueChange={field.onChange}
+                                    >
+                                        <SelectTrigger className="h-8 w-full">
+                                            <SelectValue className="h-8" placeholder=""/>
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="All">Todos</SelectItem>
+                                            <SelectItem value="true">Validados</SelectItem>
+                                            <SelectItem value="false">Sin validar</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
+
                     {/*<Input className="h-8" type="text" placeholder="Descripcion"/>*/}
-                    <Button type="submit" className="w-full" style={{  marginTop: '2rem'}}>Buscar</Button>
+                    <Button type="submit" className="w-full" style={{marginTop: '2rem'}}>Buscar</Button>
                 </form>
             </Form>
         </div>
 
 
-)
+    )
 }

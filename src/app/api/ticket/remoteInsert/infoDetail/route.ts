@@ -44,19 +44,19 @@ export async function POST(req: NextRequest) {
 
                 console.log('services 1', services);
 
+                if (!services.includes(service?.CA02)) {
+                    services.push(service?.CA02)
 
-                services.push(service?.CA02)
-
-                console.log('services 2', services);
-
-                await prisma.ticketInfo.update({
-                    data: {
-                        services
-                    },
-                    where: {
-                        id: ticket.id
-                    }
-                })
+                    console.log('services 2', services);
+                    await prisma.ticketInfo.update({
+                        data: {
+                            services
+                        },
+                        where: {
+                            id: ticket.id
+                        }
+                    })
+                }
             }
         }
 
