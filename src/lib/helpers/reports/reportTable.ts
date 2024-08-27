@@ -3,9 +3,10 @@ import createPdf from './createPdf2';
 import type {Content, CustomTableLayout} from "pdfmake/interfaces";
 import {TicketWithDetails} from "@/app/api/ticket/reports/pendingForValidation/route";
 import {formatDateForTable} from "@/lib/helpers/date";
+import * as XLSX from "xlsx";
 
 
-const generateReportTable = async (output: string, tickets: TicketWithDetails[]) => {
+export const generateReportTable = async (output: string, tickets: TicketWithDetails[]) => {
     const data: string[][] =  tickets.map(ticket => [
         { text: `${ticket.C_NRO_SERIE} - ${ticket.C_NRO_DOC}`, bold: true },
         ticket.C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE,
@@ -91,4 +92,32 @@ const generateReportTable = async (output: string, tickets: TicketWithDetails[])
     return response;
 };
 
-export default generateReportTable;
+export const generateReportXLSX = (tickets: TicketWithDetails[]) => {
+    const dataToExport = tickets.map(ticket => ({
+        'Nro Ticket': `${ticket.C_NRO_SERIE} - ${ticket.C_NRO_DOC}`,
+        'Nombre': ticket.C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE,
+        'Nro DNI': ticket.C_NRO_DOC_ADQUIRIENTE,
+        'Fecha': formatDateForTable(ticket.C_FEC_CREA_FACE, '-'),
+        'Servicio': ticket.services.map(service => service).join(', '),
+        'Monto': ticket.C_MONTO_PAGAR,
+    }));
+
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils?.json_to_sheet(dataToExport);
+
+    worksheet['!cols'] = [
+        { wpx: 100 }, // 'Nro Ticket' column width in pixels
+        { wpx: 300 }, // 'Nombre' column width in pixels
+        { wpx: 70 }, // 'Nro DNI' column width in pixels
+        { wpx: 120 }, // 'Fecha' column width in pixels
+        { wpx: 300 }, // 'Servicio' column width in pixels
+        { wpx: 50 }  // 'Monto' column width in pixels
+    ];
+
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, `Reporte de tickets`);
+    // Save the workbook as an Excel file
+    XLSX.writeFile(workbook, `Reporte de tickets - ${formatDateForTable(new Date().toISOString())}.xlsx`);
+    console.log('exportedData');
+}
+

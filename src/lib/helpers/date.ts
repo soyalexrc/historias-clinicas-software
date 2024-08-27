@@ -15,16 +15,16 @@ export function formatDateString(dateString: string): Date {
     return date;
 }
 
-export function formatDateForTable(date: Date | string) {
+export function formatDateForTable(date: Date | string, separator: string = '/') {
     const [d, t] = date.toString().split('T')
-    return `${formatDaysMonthYear(d)} ${formatTime(t.substring(0, 8))}`;
+    return `${formatDaysMonthYear(d, separator)} ${formatTime(t.substring(0, 8))}`;
 }
 
-export function formatDaysMonthYear(date: string) {
+export function formatDaysMonthYear(date: string, separator: string) {
     const year = date.split('-')[0];
     const month = date.split('-')[1];
     const day = date.split('-')[2];
-    return `${day}/${month}/${year}`;
+    return `${day}${separator}${month}${separator}${year}`;
 }
 
 export function formatTime(time: string) {
@@ -37,3 +37,4 @@ export function formatTime(time: string) {
     }
     return `${hours}:${minutes}:${seconds} AM`;
 }
+
