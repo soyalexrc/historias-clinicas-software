@@ -34,7 +34,8 @@ import {ClerkUser} from "@/lib/interfaces/User";
 import {toast} from "sonner"
 import {useRouter} from "next/navigation";
 import {Ticket} from "@prisma/client";
-import generateTicket from "@/lib/helpers/reports/reportTable";
+import {generateReportTable, generateReportXLSX} from "@/lib/helpers/reports/reportTable";
+import {TicketWithDetails} from "@/app/api/ticket/reports/pendingForValidation/route";
 
 
 interface DataTableProps<TData, TValue> {
@@ -51,7 +52,7 @@ export function DataTable<TData, TValue>({
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
-
+    const [pdfLoading, setPdfLoading] = React.useState<boolean>(false)
 
     const table = useReactTable({
         data,
@@ -86,7 +87,15 @@ export function DataTable<TData, TValue>({
     }
 
     async function generateReport(output: string) {
-        const response: any = await generateTicket(output);
+        setPdfLoading(true);
+        const selectedRows: TicketWithDetails[] = table.getFilteredSelectedRowModel().rows.map(r => r.original as TicketWithDetails);
+
+        const response: any = await generateReportTable(output, selectedRows);
+
+        setTimeout(() => {
+            setPdfLoading(false);
+        }, 2000)
+
 
         if (!response?.success) {
             alert(response?.message);
@@ -104,14 +113,25 @@ export function DataTable<TData, TValue>({
         // }, 2000);
     }
 
+    function exportXLSX() {
+        const selectedRows: TicketWithDetails[] = table.getFilteredSelectedRowModel().rows.map(r => r.original as TicketWithDetails);
+        generateReportXLSX(selectedRows);
+    }
+
     return (
         <div>
             <div className="flex justify-end mb-4 gap-2">
-                <Button disabled={table.getFilteredSelectedRowModel().rows.length < 1} onClick={() => generateReport('print')}>
+                <Button disabled={table.getFilteredSelectedRowModel().rows.length < 1} onClick={exportXLSX}>
                     Exportar Excel
                 </Button>
-                <Button disabled={table.getFilteredSelectedRowModel().rows.length < 1} onClick={() => generateReport('print')}>
-                    Exportar PDF
+                <Button className="flex gap-2"  disabled={table.getFilteredSelectedRowModel().rows.length < 1|| pdfLoading} onClick={() => generateReport('print')}>
+                    {
+                        pdfLoading &&
+                        <div
+                            className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                            role="status"/>
+                    }
+                    {pdfLoading ? 'Exportando...' : 'Exportar PDF'}
                 </Button>
                 <Button
                     disabled={table.getFilteredSelectedRowModel().rows.length < 1 || table.getFilteredSelectedRowModel().rows.some(r => (r.original as Ticket).isValidated)}
