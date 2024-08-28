@@ -118,7 +118,7 @@ export async function GET(req: NextRequest) {
 
         return NextResponse.json(tickets);
     } catch (err) {
-        console.log(err)
+        console.error(err)
         return NextResponse.json({error: 'Error', desc: err}, {status: 500});
     }
 }

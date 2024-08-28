@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({message: 'Se registro el ticket remoto con exito!'})
     } catch (error) {
         console.error(error);
-        return NextResponse.json({error: JSON.stringify(error)})
+        return NextResponse.json({error: JSON.stringify(error)}, {status: 500})
     }
 }
 
