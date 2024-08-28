@@ -17,6 +17,9 @@ type IncomingData = {
     C_COD_COMERCIAL_PROD_SERV: string,
 }
 
+export const maxDuration = 25;
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
     try {
         const body: IncomingData[] = await req.json();
