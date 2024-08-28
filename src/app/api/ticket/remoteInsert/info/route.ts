@@ -32,7 +32,7 @@ type IncomingData = {
 // export const runtime = 'edge';
 
 
-export const maxDuration = 25;
+// export const maxDuration = 25;
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {

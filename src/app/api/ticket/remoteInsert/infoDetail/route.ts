@@ -17,7 +17,7 @@ type IncomingData = {
     C_COD_COMERCIAL_PROD_SERV: string,
 }
 
-export const maxDuration = 25;
+// export const maxDuration = 25;
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {

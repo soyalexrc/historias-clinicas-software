@@ -5,7 +5,7 @@ import {TicketInfo, TicketInfoDetail} from "@prisma/client";
 interface TicketDetailWithService extends TicketInfoDetail {service?: any}
 export interface TicketWithDetails extends TicketInfo {details?: any[]}
 
-export const maxDuration = 25;
+// export const maxDuration = 25;
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
