@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
         console.log('service', service);
 
 
-        if (service && service.CA02) {
+        if (service) {
             console.log('CA02', service.CA02);
             const ticket = await prisma.ticketInfo.findUnique({ where: { C_ID: newTicket.C_ID } });
             console.log('ticket', ticket);
@@ -47,19 +47,27 @@ export async function POST(req: NextRequest) {
 
                 console.log('services 1', services);
 
-                if (!services.includes(service?.CA02)) {
-                    services.push(service?.CA02)
-
-                    console.log('services 2', services);
-                    await prisma.ticketInfo.update({
-                        data: {
-                            services
-                        },
-                        where: {
-                            id: ticket.id
-                        }
-                    })
+                if (service.CA01) {
+                    if (!services.includes(service.CA01)) {
+                        services.push(service.CA01)
+                    }
                 }
+
+                if (service.CA02) {
+                    if (!services.includes(service.CA02)) {
+                        services.push(service.CA02)
+                    }
+                }
+
+                console.log('services 2', services);
+                await prisma.ticketInfo.update({
+                    data: {
+                        services
+                    },
+                    where: {
+                        id: ticket.id
+                    }
+                })
             }
         }
 
