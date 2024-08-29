@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
-import {MoreHorizontal, ArrowUpDown, CheckCheck, TriangleAlert} from "lucide-react";
+import {MoreHorizontal, ArrowUpDown, CheckCheck, TriangleAlert, Eye} from "lucide-react";
 import {Checkbox} from "@/components/ui/checkbox"
 import {TicketForReports, Detail, Service} from "@/lib/interfaces/Ticket";
 import {format} from "date-fns";
@@ -150,26 +150,11 @@ export const columns: ColumnDef<TicketForReports>[] = [
 
             return (
                 <Sheet>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-6 w-6 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4"/>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                            <SheetTrigger>
-                                <DropdownMenuItem>
-                                    Ver detalle de ticket
-                                </DropdownMenuItem>
-                            </SheetTrigger>
-                            {/*<DropdownMenuSeparator />*/}
-                            {/*<DropdownMenuItem>View customer</DropdownMenuItem>*/}
-                            {/*<DropdownMenuItem>View payment details</DropdownMenuItem>*/}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-
+                    <SheetTrigger>
+                        <Button size='icon' variant='ghost'>
+                            <Eye />
+                        </Button>
+                    </SheetTrigger>
                     <SheetContent>
                         <SheetHeader>
                             <SheetTitle>{format(ticket.C_FEC_CREA_FACE, 'PP pp', { locale: es })}</SheetTitle>

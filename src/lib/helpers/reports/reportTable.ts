@@ -4,24 +4,26 @@ import type {Content, CustomTableLayout} from "pdfmake/interfaces";
 import {TicketWithDetails} from "@/app/api/ticket/reports/pendingForValidation/route";
 import {formatDateForTable} from "@/lib/helpers/date";
 import * as XLSX from "xlsx";
+import {formatPEN} from "@/lib/helpers/number";
 
 
 export const generateReportTable = async (output: string, tickets: TicketWithDetails[]) => {
     const data: string[][] =  tickets.map(ticket => [
-        { text: `${ticket.C_NRO_SERIE} - ${ticket.C_NRO_DOC}`, bold: true },
-        ticket.C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE,
-        ticket.C_NRO_DOC_ADQUIRIENTE,
-        formatDateForTable(ticket.C_FEC_CREA_FACE),
-        ticket.services.map(service => service).join(', '),
-        { text: `S/ ${ticket.C_MONTO_PAGAR}`, bold: true },
-    ] as string[]);
+        { text: `${ticket.C_NRO_SERIE} - ${ticket.C_NRO_DOC}`, bold: true, fontSize: 10, alignment: 'center' },
+        { text: ticket.C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE, fontSize: 10 },
+        { text: ticket.C_NRO_DOC_ADQUIRIENTE, fontSize: 10, alignment: 'center' },
+        { text: formatDateForTable(ticket.C_FEC_CREA_FACE, '-'), fontSize: 10, alignment: 'center' },
+        { text: ticket.services.map(service => `• ${service}`).join('\n'), fontSize: 10 },
+        { text: ticket.details ? ticket.details.map((detail: any) => `• ${detail.C_CANTIDAD_ITEM} x ${detail.C_DESCRIP_ITEM}: S/. ${detail.C_TOTAL_ITEM}`).join('\n') : '' },
+        { text: `S/ ${ticket.C_MONTO_PAGAR}`, bold: true, fontSize: 10, alignment: 'center' },
+    ] as any);
 
-    function getTotalAmount() {
+    function getTotalAmount(): string {
         let total = 0;
         tickets.map(ticket => {
             total += ticket.C_MONTO_PAGAR;
         });
-        return total;
+        return formatPEN(total);
     }
 
     const content: Content = [
@@ -29,7 +31,7 @@ export const generateReportTable = async (output: string, tickets: TicketWithDet
             layout: 'customLayout01',
             table: {
                 headerRows: 1,
-                widths: [ 100, '*', 70, 'auto', 'auto', 60 ],
+                widths: [ 78, '*', 62, 60, 'auto', 'auto', 76 ],
                 body: [
                     [
                         {text: 'Nro Ticket', bold: true},
@@ -37,10 +39,11 @@ export const generateReportTable = async (output: string, tickets: TicketWithDet
                         {text: 'Nro DNI', bold: true},
                         {text: 'Fecha', bold: true},
                         {text: 'Servicio', bold: true},
+                        {text: 'Detalle', bold: true},
                         {text: 'Monto', bold: true},
                     ],
                     ...data,
-                    [ '', '', '', '', 'Total', 'S/ ' + getTotalAmount() ],
+                    [ '', '', '', '', '', 'Total', {text: getTotalAmount(), bold: true, alignment: 'center'} ],
                     // [ { text: 'Bold value', bold: true }, 'Val 2', 'Val 3', 'Val 4' ]
                 ]
             }
@@ -58,7 +61,7 @@ export const generateReportTable = async (output: string, tickets: TicketWithDet
         {
             layout: 'noBorders',
             table: {
-                widths: [ 100, '*', 70, 'auto', 'auto', 60 ],
+                widths: [ 78, '*', 62, 60, 'auto', 'auto', 76 ],
                 headerRows: 1,
                 body: [
                     [
@@ -66,7 +69,8 @@ export const generateReportTable = async (output: string, tickets: TicketWithDet
                             text: 'Monto total',
                             bold: true,
                         },
-                        { text: 'S/ ' + getTotalAmount(), bold: true},
+                        { text: getTotalAmount(), bold: true, fontSize: 16},
+                        {},
                         {},
                         {},
                         {},
@@ -78,6 +82,7 @@ export const generateReportTable = async (output: string, tickets: TicketWithDet
                             bold: true,
                         },
                         { text: tickets.length + ' tickets', bold: true},
+                        {},
                         {},
                         {},
                         {},
