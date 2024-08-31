@@ -70,6 +70,9 @@ export async function GET(req: NextRequest) {
     try {
         const tickets: TicketWithDetails[] = await prisma.ticketInfo.findMany({
             where: whereClause,
+            orderBy: {
+                C_FEC_CREA_FACE: 'asc'
+            }
         })
 
         if (tickets.length > 0) {

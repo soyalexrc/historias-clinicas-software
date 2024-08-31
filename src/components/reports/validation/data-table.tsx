@@ -35,7 +35,8 @@ import {toast} from "sonner"
 import {useRouter} from "next/navigation";
 import {Ticket} from "@prisma/client";
 import {generateReportTable, generateReportXLSX} from "@/lib/helpers/reports/reportTable";
-import {TicketWithDetails} from "@/app/api/ticket/reports/pendingForValidation/route";
+import {TicketWithDetails} from "@/app/api/ticket/reports/route";
+import Image from "next/image";
 
 
 interface DataTableProps<TData, TValue> {
@@ -53,6 +54,7 @@ export function DataTable<TData, TValue>({
         React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
     const [pdfLoading, setPdfLoading] = React.useState<boolean>(false)
+    const [validatingLoading, setValidatingLoading] = React.useState<boolean>(false)
 
     const table = useReactTable({
         data,
@@ -71,12 +73,14 @@ export function DataTable<TData, TValue>({
     })
 
     async function validateTickets() {
+        setValidatingLoading(true);
         // @ts-ignore
         const selectedIds: number[] = table.getFilteredSelectedRowModel().rows.map(r => r.original.id);
         const userInSessionRaw = await fetch('/api/auth/user/getUserInSession');
         const userInSession = await userInSessionRaw.json() as ClerkUser;
         const userFullName = userInSession.firstName + ' ' + userInSession.lastName;
         const response = await validateTicketsAction(selectedIds, userFullName);
+        setValidatingLoading(false);
 
         toast(response.message);
 
@@ -88,7 +92,7 @@ export function DataTable<TData, TValue>({
 
     async function generateReport(output: string) {
         setPdfLoading(true);
-        const selectedRows: TicketWithDetails[] = table.getFilteredSelectedRowModel().rows.map(r => r.original as TicketWithDetails);
+        const selectedRows: TicketWithDetails[] = table.getPrePaginationRowModel().rows.map(r => r.original as TicketWithDetails);
 
         const response: any = await generateReportTable(output, selectedRows);
 
@@ -114,30 +118,42 @@ export function DataTable<TData, TValue>({
     }
 
     function exportXLSX() {
-        const selectedRows: TicketWithDetails[] = table.getFilteredSelectedRowModel().rows.map(r => r.original as TicketWithDetails);
+        const selectedRows: TicketWithDetails[] = table.getPrePaginationRowModel().rows.map(r => r.original as TicketWithDetails);
         generateReportXLSX(selectedRows);
     }
 
     return (
         <div>
             <div className="flex justify-end mb-4 gap-2">
-                <Button disabled={table.getFilteredSelectedRowModel().rows.length < 1} onClick={exportXLSX}>
+                <Button
+                    disabled={table.getFilteredSelectedRowModel().rows.length < 1 || table.getFilteredSelectedRowModel().rows.some(r => (r.original as Ticket).isValidated)}
+                    onClick={validateTickets} variant="success">
+                    {
+                        validatingLoading &&
+                        <div
+                            className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                            role="status"/>
+                    }
+                    {validatingLoading ? 'Validando...' : 'Validar'}
+                </Button>
+                <Button variant="outline" disabled={table.getRowModel().rows.length < 1} onClick={exportXLSX}>
+                    <Image alt="icono de excel" width={30} height={30} src='/icons/excel-icon.webp' />
                     Exportar Excel
                 </Button>
-                <Button className="flex gap-2"  disabled={table.getFilteredSelectedRowModel().rows.length < 1|| pdfLoading} onClick={() => generateReport('print')}>
+                <Button variant="outline" className="flex gap-2"  disabled={table.getRowModel().rows.length < 1|| pdfLoading} onClick={() => generateReport('print')}>
                     {
                         pdfLoading &&
                         <div
                             className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
                             role="status"/>
                     }
+                    {
+                        !pdfLoading &&
+                        <Image alt="icono de excel" width={30} height={30} src='/icons/pdf-icon.png' />
+                    }
                     {pdfLoading ? 'Exportando...' : 'Exportar PDF'}
                 </Button>
-                <Button
-                    disabled={table.getFilteredSelectedRowModel().rows.length < 1 || table.getFilteredSelectedRowModel().rows.some(r => (r.original as Ticket).isValidated)}
-                    onClick={validateTickets} variant="success">
-                    Validar
-                </Button>
+
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="flex gap-2">

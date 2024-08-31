@@ -7,6 +7,8 @@ export const dynamic = 'force-dynamic';
 export async function POST(req: NextRequest) {
     try {
         const body: Service2[] = await req.json();
+        console.log('Attempted to insert service', body);
+
         const newService = await prisma.service2.create({
             data: {...body[0]}
         })

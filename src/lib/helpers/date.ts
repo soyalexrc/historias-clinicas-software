@@ -20,6 +20,20 @@ export function formatDateForTable(date: Date | string, separator: string = '/')
     return `${formatDaysMonthYear(d, separator)} ${formatTime(t.substring(0, 8))}`;
 }
 
+export function formatDateForTableWithoutTime(date: Date | string, separator: string = '/') {
+    const [d] = date.toString().split('T')
+    return `${formatDaysMonthYear(d, separator)}`;
+}
+
+export function getShiftType(date: Date | string): string {
+    const [_, t] = date.toString().split('T')
+    const hours = t.split(':')[0];
+    if (Number(hours) > 12) {
+        return `PM`;
+    }
+    return `AM`;
+}
+
 export function formatDaysMonthYear(date: string, separator: string) {
     const year = date.split('-')[0];
     const month = date.split('-')[1];

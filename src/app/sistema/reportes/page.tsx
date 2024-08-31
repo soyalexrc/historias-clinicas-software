@@ -39,7 +39,7 @@ async function TableWrapper({ query }: { query: SearchParams }) {
     const urlParams = new URLSearchParams(filteredQuery.toString());
 
     if (Object.entries(query).length > 0) {
-        tickets = await fetch(`${process.env.HOST_URL}/api/ticket/reports/pendingForValidation?${urlParams}`, {
+        tickets = await fetch(`${process.env.HOST_URL}/api/ticket/reports?${urlParams}`, {
             cache: 'no-store',
             method: 'GET',
             headers: {

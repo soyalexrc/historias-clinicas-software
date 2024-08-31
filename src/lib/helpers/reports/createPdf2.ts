@@ -35,7 +35,7 @@ export const customTableLayouts: Record<string, CustomTableLayout> = {
                 return '#7b90be'
             }
 
-            if (i === node.table.body.length - 1) {
+            if (i === node.table.body.length - 1 || i === node.table.body.length - 2) {
                 return '#7b90be'
             }
 
