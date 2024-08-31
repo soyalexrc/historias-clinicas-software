@@ -187,6 +187,83 @@ model Service2 {
   C_IB_MULTIEMPRESA     String?
 }
 
+model Cliente2 {
+  id                             Int       @id @default(autoincrement())
+  RucE                           String
+  Cd_Clt                         String    @unique
+  Cd_TDI                         String
+  NDoc                           String?
+  RSocial                        String?
+  ApPat                          String?
+  ApMat                          String?
+  Nom                            String?
+  Cd_Pais                        String?
+  CodPost                        String?
+  Ubigeo                         String?
+  Direc                          String?
+  Telf1                          String?
+  Telf2                          String?
+  Fax                            String?
+  Correo                         String?
+  PWeb                           String?
+  Obs                            String?
+  CtaCtb                         String?
+  DiasCbr                        String?
+  PerCbr                         String?
+  CtaCte                         String?
+  Cd_CGC                         String?
+  Estado                         Boolean?
+  CA01                           String?
+  CA02                           String?
+  CA03                           String?
+  CA04                           String?
+  CA05                           String?
+  CA06                           String?
+  CA07                           String?
+  CA08                           String?
+  CA09                           String?
+  CA10                           String?
+  Cd_Aux                         String?
+  Cd_TClt                        String?
+  FecReg                         DateTime?
+  UsuCrea                        String?
+  FecMdf                         DateTime?
+  UsuMdf                         String?
+  NComercial                     String?
+  IB_AgRet                       Boolean?
+  IB_AgPercep                    Boolean?
+  IB_BuenContrib                 Int?
+  Cd_Vdr                         String?
+  SaldoAFavor                    Decimal?
+  Msj_Alert                      String?
+  EsExtranjero                   Int?
+  EnvioDocVtaAuto                Boolean?
+  EnvioDocVtaAdjto               Boolean?
+  PassWeb                        String?
+  DefinirDiasCredito             Int?
+  CodEAN                         String?
+  C_CD_CC                        String?
+  IB_ConsumidorFinal             Int?
+  C_FEC_GEN_PASS                 DateTime?
+  C_USU_GEN_PASS                 String?
+  C_CORREO_ENV_PASS              String?
+  C_FORMACOBRO                   String?
+  C_DIASCOBRO                    Int?
+  C_IB_PAGO_DESTINO              Int?
+  C_ESTADO_LINEA_CREDITO         Int?
+  C_FEC_AMPLIACION_LINEA_CRED    DateTime?
+  C_MOTIVO_AMPLIACION_LINEA_CRED String?
+  C_IB_AGENTE                    Int?
+  C_CD_CCOSTOS                   String?
+  C_CD_SCCOSTOS                  String?
+  C_CD_SSCCOSTOS                 String?
+  C_DIAS_TOLERANCIA_CREDITO      Int?
+  C_FECHA_INGRESO                DateTime?
+  C_CODIGO_HOMOLOGACION          String?
+  C_IB_MULTIEMPRESA              Boolean?
+  C_URBANIZACION                 String?
+}
+
 model ManualSearch {
   id            Int                @id @default(autoincrement())
   C_ID          String             @unique
