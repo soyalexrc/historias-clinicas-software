@@ -20,15 +20,24 @@ export async function GET(req: NextRequest) {
     const status = params.get('status');
 
     const whereClause: any = {};
+    let orderByClause: any = {};
 
     if (datefrom && dateTo) {
         // TODO Date is missing hours
         const dt = new Date(dateTo);
         dt.setHours(42);
-        whereClause['C_FEC_CREA_FACE'] = {
-            gte: new Date(datefrom),
-            lte: dt
+        if (status && status !== 'All' && JSON.parse(status) === true) {
+            whereClause['validateDate'] = {
+                gte: new Date(datefrom),
+                lte: dt
+            }
+        } else {
+            whereClause['C_FEC_CREA_FACE'] = {
+                gte: new Date(datefrom),
+                lte: dt
+            }
         }
+
     }
 
     if (nroSerie) {
@@ -58,10 +67,16 @@ export async function GET(req: NextRequest) {
     if (status && status !== 'All') {
         if (JSON.parse(status)) {
             whereClause['isValidated'] = true;
+            orderByClause = {
+                validatedDate: 'asc'
+            }
         } else {
             whereClause['isValidated'] = {
                 not: true
             };
+            orderByClause = {
+                C_FEC_CREA_FACE: 'asc'
+            }
         }
     }
 
@@ -70,9 +85,7 @@ export async function GET(req: NextRequest) {
     try {
         const tickets: TicketWithDetails[] = await prisma.ticketInfo.findMany({
             where: whereClause,
-            orderBy: {
-                C_FEC_CREA_FACE: 'asc'
-            }
+            orderBy: orderByClause
         })
 
         if (tickets.length > 0) {

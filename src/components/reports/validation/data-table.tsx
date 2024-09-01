@@ -20,7 +20,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import {Button} from "@/components/ui/button";
-import React from "react";
+import React, {useEffect} from "react";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -37,6 +37,7 @@ import {Ticket} from "@prisma/client";
 import {generateReportTable, generateReportXLSX} from "@/lib/helpers/reports/reportTable";
 import {TicketWithDetails} from "@/app/api/ticket/reports/route";
 import Image from "next/image";
+import {getISOStringInLocalTimeZone} from "@/lib/helpers/date";
 
 
 interface DataTableProps<TData, TValue> {
@@ -79,7 +80,7 @@ export function DataTable<TData, TValue>({
         const userInSessionRaw = await fetch('/api/auth/user/getUserInSession');
         const userInSession = await userInSessionRaw.json() as ClerkUser;
         const userFullName = userInSession.firstName + ' ' + userInSession.lastName;
-        const response = await validateTicketsAction(selectedIds, userFullName);
+        const response = await validateTicketsAction(selectedIds, userFullName, getISOStringInLocalTimeZone());
         setValidatingLoading(false);
 
         toast(response.message);
@@ -122,10 +123,15 @@ export function DataTable<TData, TValue>({
         generateReportXLSX(selectedRows);
     }
 
+    useEffect(() => {
+        console.log(getISOStringInLocalTimeZone())
+    }, []);
+
     return (
         <div>
             <div className="flex justify-end mb-4 gap-2">
                 <Button
+                    className="flex gap-2"
                     disabled={table.getFilteredSelectedRowModel().rows.length < 1 || table.getFilteredSelectedRowModel().rows.some(r => (r.original as Ticket).isValidated)}
                     onClick={validateTickets} variant="success">
                     {

@@ -1,10 +1,7 @@
 'use server';
 import prisma from "@/lib/db/prisma";
 
-export async function validateTicketsAction(ticketsIds: number[], valitadedBy: string) {
-
-    const validatedDate = new Date().toISOString();
-
+export async function validateTicketsAction(ticketsIds: number[], valitadedBy: string, dateString: string) {
     try {
         await prisma.ticketInfo.updateMany({
             where: {
@@ -12,7 +9,7 @@ export async function validateTicketsAction(ticketsIds: number[], valitadedBy: s
             },
             data: {
                 isValidated: true,
-                validatedDate,
+                validatedDate: dateString,
                 valitadedBy
             }
         })
