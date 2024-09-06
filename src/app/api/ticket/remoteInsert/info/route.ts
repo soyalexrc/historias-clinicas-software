@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
                 console.log('inserted ticket info', newTicket);
                 return NextResponse.json({message: 'Se registro el ticket remoto con exito!'})
             } catch (error) {
-                console.error(`Retry attempt ${retries + 1} failed:`, error);
+                console.error(`Retry attempt (info) ${retries + 1} failed:`, error);
                 retries++;
 
                 if (retries < MAX_RETRIES) {
