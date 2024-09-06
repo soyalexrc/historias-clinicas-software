@@ -3,6 +3,7 @@ import prisma from "@/lib/db/prisma";
 import {Service2} from "@prisma/client";
 
 export const dynamic = 'force-dynamic';
+export const maxDuration = 30;
 
 const MAX_RETRIES = 3; // Adjust the maximum retry attempts as needed
 const RETRY_DELAY = 5000; // Retry delay in milliseconds

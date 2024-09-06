@@ -7,6 +7,7 @@ export interface TicketWithDetails extends TicketInfo {details?: any[]}
 
 // export const maxDuration = 25;
 export const dynamic = 'force-dynamic';
+export const maxDuration = 30;
 
 export async function GET(req: NextRequest) {
     const params = req.nextUrl.searchParams;

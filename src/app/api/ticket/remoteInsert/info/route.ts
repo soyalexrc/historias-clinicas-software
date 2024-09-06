@@ -34,6 +34,7 @@ type IncomingData = {
 
 // export const maxDuration = 25;
 export const dynamic = 'force-dynamic';
+export const maxDuration = 30;
 
 const MAX_RETRIES = 3; // Adjust the maximum retry attempts as needed
 const RETRY_DELAY = 5000; // Retry delay in milliseconds
