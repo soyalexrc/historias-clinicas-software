@@ -21,12 +21,12 @@ export async function POST(req: NextRequest) {
                     data: {...body[0]}
                 })
 
-                console.log('inserted client info', newService);
+                console.log(`inserted client info on retry attempt ${retries + 1}`, newService);
 
 
                 return NextResponse.json({message: 'Se registro el cliente remoto con exito!'})
             } catch (error) {
-                console.error(`Retry attempt (service) ${retries + 1} failed:`, error);
+                console.warn(`Retry attempt (service) ${retries + 1} failed:`, error);
                 retries++;
 
                 if (retries < MAX_RETRIES) {
