@@ -7,7 +7,7 @@ export default async function Layout({children}: Readonly<{ children: React.Reac
 
     return (
         <>
-            <MainNavigationMenu user={user}/>
+            <MainNavigationMenu role={user?.publicMetadata.role as string ?? 'default'}/>
             {children}
             {user && <MainFooter
                 type={user.publicMetadata?.type as string}
