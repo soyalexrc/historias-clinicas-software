@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
                         IB_ConsumidorFinal: Number(body[0].IB_ConsumidorFinal) as any,
                         C_IB_PAGO_DESTINO: Number(body[0].C_IB_PAGO_DESTINO) as any,
                         C_IB_AGENTE: Number(body[0].C_IB_AGENTE) as any,
+                        DefinirDiasCredito: Number(body[0].DefinirDiasCredito) as any,
                     }
                 })
 
