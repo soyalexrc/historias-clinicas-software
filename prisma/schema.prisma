@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model Patient {
@@ -24,14 +24,13 @@ model Attention {
   id        String  @id @default(cuid())
   sequence  Int     @default(autoincrement())
   patientId String
+  ticketId  Int     @unique
   patient   Patient @relation(fields: [patientId], references: [id])
   ticket    Ticket  @relation(fields: [ticketId], references: [id])
-  ticketId  Int     @unique
 }
 
 model Ticket {
   id                             Int        @id @default(autoincrement())
-  attention                      Attention?
   cidDetail                      String
   cidItem                        String
   ccodProdServItem               String
@@ -73,6 +72,7 @@ model Ticket {
   isValidated                    Boolean?
   validatesDate                  DateTime?  @default(now())
   valitadedBy                    String?
+  attention                      Attention?
 }
 
 model TestTicket {
@@ -96,37 +96,37 @@ model TicketInfo {
   C_NRO_SERIE                       String
   C_NRO_DOC                         String
   C_NRO_DOC_ADQUIRIENTE             String?
-  C_TIP_DOC_ADQUIRIENTE             String?
-  C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE String?
   C_MONEDA                          String
-  C_RUCE                            String
   C_MONTO_TOTAL_IGV                 Int
-  C_TOTAL_OPERACIONES_GRAV          Int?
   C_MONTO_PAGAR                     Int
   C_MONTO_TOTAL_PERCEP              Int?
   C_LEYENDA                         String?
   C_FEC_CREA_FACE                   DateTime
+  C_RUCE                            String
+  C_TIP_DOC_ADQUIRIENTE             String?
+  C_TOTAL_OPERACIONES_GRAV          Int?
   isValidated                       Boolean?
-  validatedDate                     DateTime?
   valitadedBy                       String?
+  validatedDate                     DateTime?
+  C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE String?
   services                          String[]
 }
 
 model TicketInfoDetail {
   id                           Int    @id @default(autoincrement())
   C_ID                         Int
-  C_ID_ITEM                    Int
   C_DESCRIP_ITEM               String
-  C_COD_PROD_SERV_ITEM         String
   C_VALOR_VENTA_UNITARIA       Int
-  C_INDICADOR_PS_ITEM          String
-  C_PRECIO_VENTA_UNITARIO_ITEM Int
   C_CANTIDAD_ITEM              Int
   C_IGV_TOTAL_ITEM             Int
+  C_COD_SUNAT_PROD_SERV_ITEM   String
+  C_ID_ITEM                    Int
+  C_COD_COMERCIAL_PROD_SERV    String
+  C_COD_PROD_SERV_ITEM         String
+  C_INDICADOR_PS_ITEM          String
+  C_PRECIO_VENTA_UNITARIO_ITEM Int
   C_TOTAL_ITEM                 Int
   C_VALOR_ITEM                 Int
-  C_COD_SUNAT_PROD_SERV_ITEM   String
-  C_COD_COMERCIAL_PROD_SERV    String
 }
 
 model Service2 {
@@ -136,7 +136,6 @@ model Service2 {
   CodCo                 String?
   Nombre                String?
   Descrip               String?
-  NCorto                String?
   Cta1                  String?
   Cta2                  String?
   Img                   String?
@@ -185,6 +184,7 @@ model Service2 {
   C_IB_CRM              String?
   C_CODIGO_HOMOLOGACION String?
   C_IB_MULTIEMPRESA     String?
+  NCorto                String?
 }
 
 model Cliente2 {
@@ -212,7 +212,7 @@ model Cliente2 {
   PerCbr                         String?
   CtaCte                         String?
   Cd_CGC                         String?
-  Estado                         Boolean?
+  Estado                         Int?
   CA01                           String?
   CA02                           String?
   CA03                           String?
@@ -230,8 +230,8 @@ model Cliente2 {
   FecMdf                         DateTime?
   UsuMdf                         String?
   NComercial                     String?
-  IB_AgRet                       Boolean?
-  IB_AgPercep                    Boolean?
+  IB_AgRet                       Int?
+  IB_AgPercep                    Int?
   IB_BuenContrib                 Int?
   Cd_Vdr                         String?
   SaldoAFavor                    Decimal?
@@ -250,7 +250,6 @@ model Cliente2 {
   C_FORMACOBRO                   String?
   C_DIASCOBRO                    Int?
   C_IB_PAGO_DESTINO              Int?
-  C_ESTADO_LINEA_CREDITO         Int?
   C_FEC_AMPLIACION_LINEA_CRED    DateTime?
   C_MOTIVO_AMPLIACION_LINEA_CRED String?
   C_IB_AGENTE                    Int?
@@ -262,6 +261,7 @@ model Cliente2 {
   C_CODIGO_HOMOLOGACION          String?
   C_IB_MULTIEMPRESA              Boolean?
   C_URBANIZACION                 String?
+  C_ESTADO_LINEA_CREDITO         Int?
 }
 
 model ManualSearch {
