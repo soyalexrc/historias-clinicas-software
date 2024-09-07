@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
                         ...body[0],
                         FecReg: formatDateString(body[0].FecReg as any ?? new Date().toISOString()),
                         FecMdf: formatDateString(body[0].FecMdf as any ?? new Date().toISOString()),
-                        C_FECHA_INGRESO: formatDateString(body[0].C_FECHA_INGRESO as any ?? new Date().toISOString()),
+                        C_FECHA_INGRESO: formatDateString(new Date(body[0].C_FECHA_INGRESO ?? new Date()).toISOString() as any ?? new Date().toISOString()),
                         IB_BuenContrib: Number(body[0].IB_BuenContrib) as any,
                         Estado: Number(body[0].Estado) as any,
                         IB_AgRet: Number(body[0].IB_AgRet) as any,
