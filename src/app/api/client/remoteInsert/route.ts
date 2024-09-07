@@ -23,7 +23,15 @@ export async function POST(req: NextRequest) {
                         ...body[0],
                         FecReg: formatDateString(body[0].FecReg as any ?? new Date().toISOString()),
                         FecMdf: formatDateString(body[0].FecMdf as any ?? new Date().toISOString()),
-                        IB_BuenContrib: Number(body[0].IB_BuenContrib) as any
+                        C_FECHA_INGRESO: formatDateString(body[0].C_FECHA_INGRESO as any ?? new Date().toISOString()),
+                        IB_BuenContrib: Number(body[0].IB_BuenContrib) as any,
+                        Estado: Number(body[0].Estado) as any,
+                        IB_AgRet: Number(body[0].IB_AgRet) as any,
+                        IB_AgPercep: Number(body[0].IB_AgPercep) as any,
+                        EsExtranjero: Number(body[0].EsExtranjero) as any,
+                        IB_ConsumidorFinal: Number(body[0].IB_ConsumidorFinal) as any,
+                        C_IB_PAGO_DESTINO: Number(body[0].C_IB_PAGO_DESTINO) as any,
+                        C_IB_AGENTE: Number(body[0].C_IB_AGENTE) as any,
                     }
                 })
 
