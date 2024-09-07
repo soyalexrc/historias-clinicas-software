@@ -149,7 +149,7 @@ model Service2 {
   UsuMdf                String?
   FecReg                DateTime?
   FecMdf                DateTime?
-  Estado                String?
+  Estado                Boolean?
   CA01                  String?
   CA02                  String?
   CA03                  String?
@@ -166,16 +166,16 @@ model Service2 {
   Cta6                  String?
   Cta7                  String?
   Cta8                  String?
-  IB_LF                 String?
-  IB_ActivoFijo         String?
+  IB_LF                 Boolean?
+  IB_ActivoFijo         Boolean?
   Cta9                  String?
   Cta10                 String?
   Cta11                 String?
   Cta12                 String?
-  C_IB_LC               String?
+  C_IB_LC               Boolean?
   C_CD_SRV_INAFECTO     String?
   C_CD_SRV_AFECTO       String?
-  C_IB_SOBRE_TASA       String?
+  C_IB_SOBRE_TASA       Boolean?
   C_COD_BBSS            String?
   C_CD_SERV_ADICIONAL   String?
   C_PORCENTAJE_AFECTADO String?
@@ -212,7 +212,7 @@ model Cliente2 {
   PerCbr                         String?
   CtaCte                         String?
   Cd_CGC                         String?
-  Estado                         Int?
+  Estado                         Boolean?
   CA01                           String?
   CA02                           String?
   CA03                           String?
