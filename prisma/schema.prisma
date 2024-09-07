@@ -179,8 +179,8 @@ model Service2 {
   C_COD_BBSS            String?
   C_CD_SERV_ADICIONAL   String?
   C_PORCENTAJE_AFECTADO String?
-  C_IB_ES_OBLIGATORIO   String?
-  C_IB_INCLUYE_IGV      String?
+  C_IB_ES_OBLIGATORIO   Boolean?
+  C_IB_INCLUYE_IGV      Boolean?
   C_IB_CRM              String?
   C_CODIGO_HOMOLOGACION String?
   C_IB_MULTIEMPRESA     String?
