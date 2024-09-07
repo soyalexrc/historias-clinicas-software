@@ -212,7 +212,7 @@ model Cliente2 {
   PerCbr                         String?
   CtaCte                         String?
   Cd_CGC                         String?
-  Estado                         Boolean?
+  Estado                         Int?
   CA01                           String?
   CA02                           String?
   CA03                           String?
