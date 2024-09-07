@@ -21,8 +21,8 @@ export async function POST(req: NextRequest) {
                 const newClient = await prisma.cliente2.create({
                     data: {
                         ...body[0],
-                        FecReg: formatDateString(body[0].FecReg?.toISOString() ?? new Date().toISOString()),
-                        FecMdf: formatDateString(body[0].FecMdf?.toISOString() ?? new Date().toISOString()),
+                        FecReg: formatDateString(body[0].FecReg as any ?? new Date().toISOString()),
+                        FecMdf: formatDateString(body[0].FecMdf as any ?? new Date().toISOString()),
                     }
                 })
 
