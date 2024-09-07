@@ -1,6 +1,7 @@
 import {NextRequest, NextResponse} from "next/server";
 import prisma from "@/lib/db/prisma";
 import {Cliente2} from "@prisma/client";
+import {formatDateString} from "@/lib/helpers/date";
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
@@ -18,7 +19,11 @@ export async function POST(req: NextRequest) {
         while (retries < MAX_RETRIES) {
             try {
                 const newClient = await prisma.cliente2.create({
-                    data: {...body[0]}
+                    data: {
+                        ...body[0],
+                        FecReg: formatDateString(body[0].FecReg?.toISOString() ?? new Date().toISOString()),
+                        FecMdf: formatDateString(body[0].FecMdf?.toISOString() ?? new Date().toISOString()),
+                    }
                 })
 
                 console.log(`inserted client info on retry attempt ${retries + 1}`, newClient)
