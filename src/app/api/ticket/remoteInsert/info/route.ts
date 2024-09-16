@@ -83,16 +83,16 @@ export async function POST(req: NextRequest) {
                 })
                 console.log(`inserted ticket info on retry attempt ${retries + 1}`, newTicket);
 
-                const collectionRef = collection(db, 'traumatologia')
-                const documentData = {
-                    name: body[0].C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE,
-                    service: 'Traumatologia',
-                    dni: body[0].C_NRO_DOC_ADQUIRIENTE,
-                    attend: false,
-                    datetime: new Date(),
-                }
-                const newDocRef = await addDoc(collectionRef, documentData)
-                console.log(`dispatched ticket into firebase on retry attempt ${retries + 1}`, newDocRef);
+                // const collectionRef = collection(db, 'traumatologia')
+                // const documentData = {
+                //     name: body[0].C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE,
+                //     service: 'Traumatologia',
+                //     dni: body[0].C_NRO_DOC_ADQUIRIENTE,
+                //     attend: false,
+                //     datetime: new Date(),
+                // }
+                // const newDocRef = await addDoc(collectionRef, documentData)
+                // console.log(`dispatched ticket into firebase on retry attempt ${retries + 1}`, newDocRef);
 
                 return NextResponse.json({message: 'Se registro el ticket remoto con exito!'})
             } catch (error) {
