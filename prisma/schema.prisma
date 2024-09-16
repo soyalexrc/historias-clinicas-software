@@ -229,6 +229,7 @@ model Cliente2 {
   UsuCrea                        String?
   FecMdf                         DateTime?
   UsuMdf                         String?
+  C_CONTRASENA_WEB               String?
   NComercial                     String?
   IB_AgRet                       Int?
   IB_AgPercep                    Int?

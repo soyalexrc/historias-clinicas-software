@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Cliente2" ADD COLUMN     "C_CONTRASENA_WEB" TEXT;
