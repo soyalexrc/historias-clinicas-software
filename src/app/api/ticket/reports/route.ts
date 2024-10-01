@@ -88,7 +88,7 @@ export async function GET(req: NextRequest) {
     const RETRY_DELAY = 5000; // Retry delay in milliseconds
 
     try {
-
+        let retries = 0;
         while (retries < MAX_RETRIES) {
             try {
                 const tickets: TicketWithDetails[] = await prisma.ticketInfo.findMany({
