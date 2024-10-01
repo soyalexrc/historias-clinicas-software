@@ -149,7 +149,6 @@ model Service2 {
   UsuMdf                String?
   FecReg                DateTime?
   FecMdf                DateTime?
-  Estado                Boolean?
   CA01                  String?
   CA02                  String?
   CA03                  String?
@@ -166,25 +165,26 @@ model Service2 {
   Cta6                  String?
   Cta7                  String?
   Cta8                  String?
-  IB_LF                 Boolean?
-  IB_ActivoFijo         Boolean?
   Cta9                  String?
   Cta10                 String?
   Cta11                 String?
   Cta12                 String?
-  C_IB_LC               Boolean?
   C_CD_SRV_INAFECTO     String?
   C_CD_SRV_AFECTO       String?
-  C_IB_SOBRE_TASA       Boolean?
   C_COD_BBSS            String?
   C_CD_SERV_ADICIONAL   String?
   C_PORCENTAJE_AFECTADO String?
-  C_IB_ES_OBLIGATORIO   Boolean?
-  C_IB_INCLUYE_IGV      Boolean?
-  C_IB_CRM              Boolean?
   C_CODIGO_HOMOLOGACION String?
   C_IB_MULTIEMPRESA     String?
   NCorto                String?
+  Estado                Boolean?
+  IB_LF                 Boolean?
+  IB_ActivoFijo         Boolean?
+  C_IB_LC               Boolean?
+  C_IB_SOBRE_TASA       Boolean?
+  C_IB_ES_OBLIGATORIO   Boolean?
+  C_IB_INCLUYE_IGV      Boolean?
+  C_IB_CRM              Boolean?
 }
 
 model Cliente2 {
@@ -212,7 +212,6 @@ model Cliente2 {
   PerCbr                         String?
   CtaCte                         String?
   Cd_CGC                         String?
-  Estado                         Int?
   CA01                           String?
   CA02                           String?
   CA03                           String?
@@ -229,31 +228,22 @@ model Cliente2 {
   UsuCrea                        String?
   FecMdf                         DateTime?
   UsuMdf                         String?
-  C_CONTRASENA_WEB               String?
   NComercial                     String?
-  IB_AgRet                       Int?
-  IB_AgPercep                    Int?
-  IB_BuenContrib                 Int?
   Cd_Vdr                         String?
   SaldoAFavor                    Decimal?
   Msj_Alert                      String?
-  EsExtranjero                   Int?
   EnvioDocVtaAuto                Boolean?
   EnvioDocVtaAdjto               Boolean?
   PassWeb                        String?
-  DefinirDiasCredito             Int?
   CodEAN                         String?
   C_CD_CC                        String?
-  IB_ConsumidorFinal             Int?
   C_FEC_GEN_PASS                 DateTime?
   C_USU_GEN_PASS                 String?
   C_CORREO_ENV_PASS              String?
   C_FORMACOBRO                   String?
   C_DIASCOBRO                    Int?
-  C_IB_PAGO_DESTINO              Int?
   C_FEC_AMPLIACION_LINEA_CRED    DateTime?
   C_MOTIVO_AMPLIACION_LINEA_CRED String?
-  C_IB_AGENTE                    Int?
   C_CD_CCOSTOS                   String?
   C_CD_SCCOSTOS                  String?
   C_CD_SSCCOSTOS                 String?
@@ -263,6 +253,16 @@ model Cliente2 {
   C_IB_MULTIEMPRESA              Boolean?
   C_URBANIZACION                 String?
   C_ESTADO_LINEA_CREDITO         Int?
+  IB_AgRet                       Int?
+  IB_AgPercep                    Int?
+  IB_BuenContrib                 Int?
+  EsExtranjero                   Int?
+  DefinirDiasCredito             Int?
+  IB_ConsumidorFinal             Int?
+  C_IB_PAGO_DESTINO              Int?
+  C_IB_AGENTE                    Int?
+  Estado                         Int?
+  C_CONTRASENA_WEB               String?
 }
 
 model ManualSearch {

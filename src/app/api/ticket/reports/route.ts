@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
         const dt = new Date(dateTo);
         dt.setHours(42);
         if (status && status !== 'All' && JSON.parse(status) === true) {
-            whereClause['validateDate'] = {
+            whereClause['validatedDate'] = {
                 gte: new Date(datefrom),
                 lte: dt
             }
@@ -83,60 +83,81 @@ export async function GET(req: NextRequest) {
 
     console.log(whereClause)
 
+    let retries = 0;
+    const MAX_RETRIES = 3; // Adjust the maximum retry attempts as needed
+    const RETRY_DELAY = 5000; // Retry delay in milliseconds
+
     try {
-        const tickets: TicketWithDetails[] = await prisma.ticketInfo.findMany({
-            where: whereClause,
-            orderBy: orderByClause
-        })
 
-        if (tickets.length > 0) {
-            const ticketIds = tickets.map(ticket => ticket.C_ID);
+        while (retries < MAX_RETRIES) {
+            try {
+                const tickets: TicketWithDetails[] = await prisma.ticketInfo.findMany({
+                    where: whereClause,
+                    orderBy: orderByClause
+                })
 
-            const ticketDetails: TicketDetailWithService[] = await prisma.ticketInfoDetail.findMany({
-                where: {
-                    C_ID: { in: ticketIds }
+                if (tickets.length > 0) {
+                    const ticketIds = tickets.map(ticket => ticket.C_ID);
+
+                    const ticketDetails: TicketDetailWithService[] = await prisma.ticketInfoDetail.findMany({
+                        where: {
+                            C_ID: { in: ticketIds }
+                        }
+                    });
+
+                    const serviceCodes = ticketDetails.map(detail => detail.C_COD_PROD_SERV_ITEM);
+
+                    const services = await prisma.service2.findMany({
+                        where: {
+                            Cd_Srv: { in: serviceCodes }
+                        },
+                        select: {
+                            Cd_Srv: true,
+                            id: true,
+                            CA01: true,
+                            CA02: true,
+                            CodCo: true,
+                            Descrip: true,
+                            Nombre: true
+                        }
+                    });
+
+                    const serviceMap = services.reduce((acc: any, service) => {
+                        acc[service.Cd_Srv] = service;
+                        return acc;
+                    }, {});
+
+                    const detailsMap = ticketDetails.reduce((acc: any, detail) => {
+                        if (!acc[detail.C_ID]) {
+                            acc[detail.C_ID] = [];
+                        }
+                        detail.service = serviceMap[detail.C_COD_PROD_SERV_ITEM];
+                        acc[detail.C_ID].push(detail);
+                        return acc;
+                    }, {});
+
+                    for (const ticket of tickets) {
+                        ticket.details = detailsMap[ticket.C_ID] || [];
+                    }
+                } else {
+                    tickets.map(t => ({ ...t, details: [] }))
                 }
-            });
+                console.log(`searched tickets on retry attempt ${retries + 1}`);
 
-            const serviceCodes = ticketDetails.map(detail => detail.C_COD_PROD_SERV_ITEM);
+                return NextResponse.json(tickets);
 
-            const services = await prisma.service2.findMany({
-                where: {
-                    Cd_Srv: { in: serviceCodes }
-                },
-                select: {
-                    Cd_Srv: true,
-                    id: true,
-                    CA01: true,
-                    CA02: true,
-                    CodCo: true,
-                    Descrip: true,
-                    Nombre: true
+            } catch (error) {
+                console.warn(`Retry attempt (reports) ${retries + 1} failed:`, error);
+                retries++;
+
+                if (retries < MAX_RETRIES) {
+                    await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+                } else {
+                    throw error; // Re-throw the error after exhausting retries
                 }
-            });
-
-            const serviceMap = services.reduce((acc: any, service) => {
-                acc[service.Cd_Srv] = service;
-                return acc;
-            }, {});
-
-            const detailsMap = ticketDetails.reduce((acc: any, detail) => {
-                if (!acc[detail.C_ID]) {
-                    acc[detail.C_ID] = [];
-                }
-                detail.service = serviceMap[detail.C_COD_PROD_SERV_ITEM];
-                acc[detail.C_ID].push(detail);
-                return acc;
-            }, {});
-
-            for (const ticket of tickets) {
-                ticket.details = detailsMap[ticket.C_ID] || [];
             }
-        } else {
-            tickets.map(t => ({ ...t, details: [] }))
         }
 
-        return NextResponse.json(tickets);
     } catch (err) {
         console.error(err)
         return NextResponse.json({error: 'Error', desc: err}, {status: 500});
