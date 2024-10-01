@@ -43,14 +43,18 @@ export function getISOStringInLocalTimeZone(): string {
     const [timeString, amPm] = time.split(' ');
     const [hours, minutes, seconds] = timeString.split(':');
     const sa = '2024-09-01T02:00:36.642Z'
-    console.log({hours});
-    console.log({hoursNumber: Number(hours)});
-    console.log({sum: Number(hours) + 12});
-    console.log({sumString: (Number(hours) + 12).toString()});
+    // console.log({hours});
+    // console.log({hoursNumber: Number(hours)});
+    // console.log({sum: Number(hours) + 12});
+    // console.log({sumString: (Number(hours) + 12).toString()});
     // Convert hours to 24-hour format
-    const hour24 = amPm === 'a. m.' ? hours : (Number(hours) + 12).toString();
+    // const hour24 = amPm === 'a. m.' ? hours : (Number(hours) + 12).toString();
+    // const hour24 = amPm === 'a. m.' && hours === '12' ? '00' : (Number(hours) + (amPm === 'a. m.' ? 0 : 12)).toString();
+    // const hour24 = amPm === 'a. m.' && hours === '12' ? '00' : (Number(hours) + (amPm === 'a. m.' ? 0 : 12)).toString();
+    // const hour24 = amPm === 'a. m.' && hours === '12' ? '00' : (Number(hours) + (amPm === 'a. m.' ? 0 : 12)).toString();
+    const hour24 = amPm === 'a. m.' && hours === '12' ? '00' : (Number(hours) + (amPm === 'p. m.' ? 12 : 0)).toString();
 
-    console.log((hour24))
+    // console.log((hour24))
     const formattedMonth = month.length === 1 ? `0${month}` : month;
     const formattedDay = day.length === 1 ? `0${day}` : day;
     const formattedSeconds = seconds.length === 1 ? `0${seconds}` : seconds;
