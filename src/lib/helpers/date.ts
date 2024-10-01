@@ -52,8 +52,10 @@ export function getISOStringInLocalTimeZone(): string {
     // const hour24 = amPm === 'a. m.' && hours === '12' ? '00' : (Number(hours) + (amPm === 'a. m.' ? 0 : 12)).toString();
     // const hour24 = amPm === 'a. m.' && hours === '12' ? '00' : (Number(hours) + (amPm === 'a. m.' ? 0 : 12)).toString();
     // const hour24 = amPm === 'a. m.' && hours === '12' ? '00' : (Number(hours) + (amPm === 'a. m.' ? 0 : 12)).toString();
-    const hour24 = amPm === 'a. m.' && hours === '12' ? '00' : (Number(hours) + (amPm === 'p. m.' ? 12 : 0)).toString();
-
+    let hour24 = amPm === 'a. m.' && hours === '12' ? '00' : (Number(hours) + (amPm === 'p. m.' ? 12 : 0)).toString();
+    if (hour24.length < 2) {
+        hour24 = '0' + hour24;
+    }
     // console.log((hour24))
     const formattedMonth = month.length === 1 ? `0${month}` : month;
     const formattedDay = day.length === 1 ? `0${day}` : day;
