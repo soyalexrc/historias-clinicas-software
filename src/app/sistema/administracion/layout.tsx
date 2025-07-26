@@ -11,7 +11,7 @@ export default async function Layout({children}: Readonly<{ children: React.Reac
 
     return (
         <div>
-            <MainNavigationMenu/>
+            <MainNavigationMenu user={user} />
             <div className='pt-12 min-h-screen'>
                 {children}
             </div>

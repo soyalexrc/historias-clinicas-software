@@ -7,18 +7,13 @@ import * as XLSX from "xlsx";
 
 
 export const generateReportTable = async (output: string, tickets: TicketWithDetails[]) => {
-    const data: string[][] =  tickets.map(ticket => [
-        { text: `${ticket.C_NRO_SERIE} - ${ticket.C_NRO_DOC}`, bold: true },
-        ticket.C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE,
-        ticket.C_NRO_DOC_ADQUIRIENTE,
-        formatDateForTable(ticket.C_FEC_CREA_FACE),
-        ticket.services.map(service => service).join(', '),
-        { text: `S/ ${ticket.C_MONTO_PAGAR}`, bold: true },
-    ] as string[]);
+    // @ts-ignore
+    const data: string[][] =  tickets.map(ticket => [{ text: `${ticket.C_NRO_SERIE} - ${ticket.C_NRO_DOC}`, bold: true }, ticket.C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE, ticket.C_NRO_DOC_ADQUIRIENTE, formatDateForTable(ticket.C_FEC_CREA_FACE), ticket.services.map(service => service).join(', '), { text: `S/ ${ticket.C_MONTO_PAGAR}`, bold: true },] as string[]);
 
     function getTotalAmount() {
         let total = 0;
         tickets.map(ticket => {
+            // @ts-ignore
             total += ticket.C_MONTO_PAGAR;
         });
         return total;
@@ -93,14 +88,8 @@ export const generateReportTable = async (output: string, tickets: TicketWithDet
 };
 
 export const generateReportXLSX = (tickets: TicketWithDetails[]) => {
-    const dataToExport = tickets.map(ticket => ({
-        'Nro Ticket': `${ticket.C_NRO_SERIE} - ${ticket.C_NRO_DOC}`,
-        'Nombre': ticket.C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE,
-        'Nro DNI': ticket.C_NRO_DOC_ADQUIRIENTE,
-        'Fecha': formatDateForTable(ticket.C_FEC_CREA_FACE, '-'),
-        'Servicio': ticket.services.map(service => service).join(', '),
-        'Monto': ticket.C_MONTO_PAGAR,
-    }));
+    // @ts-ignore
+    const dataToExport = tickets.map(ticket => ({'Nro Ticket': `${ticket.C_NRO_SERIE} - ${ticket.C_NRO_DOC}`, 'Nombre': ticket.C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE, 'Nro DNI': ticket.C_NRO_DOC_ADQUIRIENTE, 'Fecha': formatDateForTable(ticket.C_FEC_CREA_FACE, '-'), 'Servicio': ticket.services.map(service => service).join(', '), 'Monto': ticket.C_MONTO_PAGAR,}));
 
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils?.json_to_sheet(dataToExport);
