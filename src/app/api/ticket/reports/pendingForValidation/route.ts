@@ -111,6 +111,38 @@ export async function GET(req: NextRequest) {
 
             for (const ticket of tickets) {
                 ticket.details = detailsMap[ticket.C_ID] || [];
+                
+                // Process special items
+                let totalDeduction = 0;
+                
+                for (const detail of ticket.details) {
+                    if (detail.C_DESCRIP_ITEM === "HISTORIA CLINICA" || detail.C_DESCRIP_ITEM === "EMISION") {
+                        // Store the original values for deduction
+                        totalDeduction += detail.C_TOTAL_ITEM;
+                        
+                        // Set price and total to 0
+                        detail.C_PRECIO_VENTA_UNITARIO_ITEM = 0;
+                        detail.C_TOTAL_ITEM = 0;
+                    } else if (detail.C_DESCRIP_ITEM === "CERTIFICADO DESCANSO MEDICO") {
+                        // Calculate the difference between original and new value (20)
+                        const originalTotal = detail.C_TOTAL_ITEM;
+                        const newTotal = 20;
+                        totalDeduction += (originalTotal - newTotal);
+                        
+                        // Set price and total to 20
+                        detail.C_PRECIO_VENTA_UNITARIO_ITEM = 20;
+                        detail.C_TOTAL_ITEM = 20;
+                    }
+                }
+                
+                // Subtract the total deduction from parent ticket totals
+                if (totalDeduction > 0) {
+                    ticket.C_MONTO_TOTAL_IGV = Math.max(0, ticket.C_MONTO_TOTAL_IGV - totalDeduction);
+                    ticket.C_MONTO_PAGAR = Math.max(0, ticket.C_MONTO_PAGAR - totalDeduction);
+                    if (ticket.C_TOTAL_OPERACIONES_GRAV !== null) {
+                        ticket.C_TOTAL_OPERACIONES_GRAV = Math.max(0, ticket.C_TOTAL_OPERACIONES_GRAV - totalDeduction);
+                    }
+                }
             }
         } else {
             tickets.map(t => ({ ...t, details: [] }))

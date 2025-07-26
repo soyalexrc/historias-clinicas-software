@@ -219,7 +219,7 @@ export default function ReportsFilters() {
                                                 <SelectValue className="h-8 w-full" placeholder=""/>
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="Traumatologia">Traumatologia</SelectItem>
+                                                <SelectItem value="Traumatología">Traumatología</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </FormControl>

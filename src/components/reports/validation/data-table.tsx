@@ -70,6 +70,8 @@ export function DataTable<TData, TValue>({
         },
     })
 
+    console.log('data', data)
+
     async function validateTickets() {
         // @ts-ignore
         const selectedIds: number[] = table.getFilteredSelectedRowModel().rows.map(r => r.original.id);
