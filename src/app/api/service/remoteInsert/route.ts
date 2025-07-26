@@ -1,5 +1,6 @@
 import {NextRequest, NextResponse} from "next/server";
 import prisma from "@/lib/db/prisma";
+// @ts-ignore
 import {Service2} from "@prisma/client";
 import {formatDateString} from "@/lib/helpers/date";
 
