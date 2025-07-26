@@ -33,6 +33,7 @@ import {validateTicketsAction} from "@/actions/tickets";
 import {ClerkUser} from "@/lib/interfaces/User";
 import {toast} from "sonner"
 import {useRouter} from "next/navigation";
+// @ts-ignore
 import {Ticket} from "@prisma/client";
 import {generateReportTable, generateReportXLSX} from "@/lib/helpers/reports/reportTable";
 import {TicketWithDetails} from "@/app/api/ticket/reports/route";
@@ -72,6 +73,8 @@ export function DataTable<TData, TValue>({
             rowSelection,
         },
     })
+
+    console.log('data', data)
 
     async function validateTickets() {
         setValidatingLoading(true);

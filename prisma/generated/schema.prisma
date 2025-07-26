@@ -1,0 +1,279 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "generated"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Patient {
+  id         String      @id @default(cuid())
+  sequence   Int         @default(autoincrement())
+  firstName  String
+  lastName   String
+  dni        String
+  age        Int
+  sex        String
+  createdAt  DateTime    @default(now())
+  attentions Attention[]
+}
+
+model Attention {
+  id        String  @id @default(cuid())
+  sequence  Int     @default(autoincrement())
+  patientId String
+  ticketId  Int     @unique
+  patient   Patient @relation(fields: [patientId], references: [id])
+  ticket    Ticket  @relation(fields: [ticketId], references: [id])
+}
+
+model Ticket {
+  id                             Int        @id @default(autoincrement())
+  cidDetail                      String
+  cidItem                        String
+  ccodProdServItem               String
+  cdescriptItem                  String
+  cindicadoPsItem                String
+  cvalorVentaUnitaria            String
+  cprecioVentaUnitarioItem       String
+  ccantidadItem                  String
+  cValorItem                     String
+  cigvTotalItem                  String
+  ctotalItem                     String
+  ccodSunatProdServItem          String
+  ccodComercialProdServ          String
+  cid                            String
+  cfecEd                         String
+  ctipDocEmisor                  String
+  capaminoRazonSocialEmisor      String
+  cubigeoEmisor                  String
+  cdireccionEmisor               String
+  cdepartamentoEmisor            String
+  cprovinciaEmisor               String
+  cdistritoEmisor                String
+  cnombreComercialEmisor         String
+  cTipDoc                        String
+  cnroSerie                      String
+  cnroDoc                        String
+  cinfoDocAdquiriente            String
+  ctipDocAdquiriente             String
+  capaminoRazonSocialAdquiriente String
+  cmoneda                        String
+  ctotalOperacionesGrav          String
+  cmontoTotalIgv                 String
+  cmontoTotalPagar               String
+  cmontoTotalPercep              String
+  cleyenda                       String
+  cfecCreaFace                   String
+  ccodigoBarras                  String
+  ccodigpQr                      String
+  isValidated                    Boolean?
+  validatesDate                  DateTime?  @default(now())
+  valitadedBy                    String?
+  attention                      Attention?
+}
+
+model TestTicket {
+  id         Int    @id @default(autoincrement())
+  jsonString String
+}
+
+model TicketInfo {
+  id                                Int       @id @default(autoincrement())
+  C_ID                              Int       @unique
+  C_FEC_ED                          DateTime
+  C_TIP_DOC_EMISOR                  String?
+  C_APAMNO_RAZON_SOCIAL_EMISOR      String
+  C_UBIGEO_EMISOR                   String?
+  C_DIRECCION_EMISOR                String?
+  C_DEPARTAMENTO_EMISOR             String?
+  C_PROVINCIA_EMISOR                String?
+  C_DISTRITO_EMISOR                 String?
+  C_NOMBRE_COMERCIAL_EMISOR         String?
+  C_TIP_DOC                         String?
+  C_NRO_SERIE                       String
+  C_NRO_DOC                         String
+  C_NRO_DOC_ADQUIRIENTE             String?
+  C_MONEDA                          String
+  C_MONTO_TOTAL_IGV                 Int
+  C_MONTO_PAGAR                     Int
+  C_MONTO_TOTAL_PERCEP              Int?
+  C_LEYENDA                         String?
+  C_FEC_CREA_FACE                   DateTime
+  C_RUCE                            String
+  C_TIP_DOC_ADQUIRIENTE             String?
+  C_TOTAL_OPERACIONES_GRAV          Int?
+  isValidated                       Boolean?
+  valitadedBy                       String?
+  validatedDate                     DateTime?
+  C_APAMNO_RAZON_SOCIAL_ADQUIRIENTE String?
+  services                          String[]
+}
+
+model TicketInfoDetail {
+  id                           Int    @id @default(autoincrement())
+  C_ID                         Int
+  C_DESCRIP_ITEM               String
+  C_VALOR_VENTA_UNITARIA       Int
+  C_CANTIDAD_ITEM              Int
+  C_IGV_TOTAL_ITEM             Int
+  C_COD_SUNAT_PROD_SERV_ITEM   String
+  C_ID_ITEM                    Int
+  C_COD_COMERCIAL_PROD_SERV    String
+  C_COD_PROD_SERV_ITEM         String
+  C_INDICADOR_PS_ITEM          String
+  C_PRECIO_VENTA_UNITARIO_ITEM Int
+  C_TOTAL_ITEM                 Int
+  C_VALOR_ITEM                 Int
+}
+
+model Service2 {
+  id                    Int       @id @default(autoincrement())
+  RucE                  String?
+  Cd_Srv                String    @unique
+  CodCo                 String?
+  Nombre                String?
+  Descrip               String?
+  Cta1                  String?
+  Cta2                  String?
+  Img                   String?
+  Cd_GS                 String?
+  Cd_CGP                String?
+  Cd_CC                 String?
+  Cd_SC                 String?
+  Cd_SS                 String?
+  IC_TipServ            String?
+  UsuCrea               String?
+  UsuMdf                String?
+  FecReg                DateTime?
+  FecMdf                DateTime?
+  CA01                  String?
+  CA02                  String?
+  CA03                  String?
+  CA04                  String?
+  CA05                  String?
+  CA06                  String?
+  CA07                  String?
+  CA08                  String?
+  CA09                  String?
+  CA10                  String?
+  Cta3                  String?
+  Cta4                  String?
+  Cta5                  String?
+  Cta6                  String?
+  Cta7                  String?
+  Cta8                  String?
+  Cta9                  String?
+  Cta10                 String?
+  Cta11                 String?
+  Cta12                 String?
+  C_CD_SRV_INAFECTO     String?
+  C_CD_SRV_AFECTO       String?
+  C_COD_BBSS            String?
+  C_CD_SERV_ADICIONAL   String?
+  C_PORCENTAJE_AFECTADO String?
+  C_CODIGO_HOMOLOGACION String?
+  C_IB_MULTIEMPRESA     String?
+  NCorto                String?
+  Estado                Boolean?
+  IB_LF                 Boolean?
+  IB_ActivoFijo         Boolean?
+  C_IB_LC               Boolean?
+  C_IB_SOBRE_TASA       Boolean?
+  C_IB_ES_OBLIGATORIO   Boolean?
+  C_IB_INCLUYE_IGV      Boolean?
+  C_IB_CRM              Boolean?
+}
+
+model Cliente2 {
+  id                             Int       @id @default(autoincrement())
+  RucE                           String
+  Cd_Clt                         String    @unique
+  Cd_TDI                         String
+  NDoc                           String?
+  RSocial                        String?
+  ApPat                          String?
+  ApMat                          String?
+  Nom                            String?
+  Cd_Pais                        String?
+  CodPost                        String?
+  Ubigeo                         String?
+  Direc                          String?
+  Telf1                          String?
+  Telf2                          String?
+  Fax                            String?
+  Correo                         String?
+  PWeb                           String?
+  Obs                            String?
+  CtaCtb                         String?
+  DiasCbr                        String?
+  PerCbr                         String?
+  CtaCte                         String?
+  Cd_CGC                         String?
+  CA01                           String?
+  CA02                           String?
+  CA03                           String?
+  CA04                           String?
+  CA05                           String?
+  CA06                           String?
+  CA07                           String?
+  CA08                           String?
+  CA09                           String?
+  CA10                           String?
+  Cd_Aux                         String?
+  Cd_TClt                        String?
+  FecReg                         DateTime?
+  UsuCrea                        String?
+  FecMdf                         DateTime?
+  UsuMdf                         String?
+  NComercial                     String?
+  Cd_Vdr                         String?
+  SaldoAFavor                    Decimal?
+  Msj_Alert                      String?
+  EnvioDocVtaAuto                Boolean?
+  EnvioDocVtaAdjto               Boolean?
+  PassWeb                        String?
+  CodEAN                         String?
+  C_CD_CC                        String?
+  C_FEC_GEN_PASS                 DateTime?
+  C_USU_GEN_PASS                 String?
+  C_CORREO_ENV_PASS              String?
+  C_FORMACOBRO                   String?
+  C_DIASCOBRO                    Int?
+  C_FEC_AMPLIACION_LINEA_CRED    DateTime?
+  C_MOTIVO_AMPLIACION_LINEA_CRED String?
+  C_CD_CCOSTOS                   String?
+  C_CD_SCCOSTOS                  String?
+  C_CD_SSCCOSTOS                 String?
+  C_DIAS_TOLERANCIA_CREDITO      Int?
+  C_FECHA_INGRESO                DateTime?
+  C_CODIGO_HOMOLOGACION          String?
+  C_IB_MULTIEMPRESA              Boolean?
+  C_URBANIZACION                 String?
+  C_ESTADO_LINEA_CREDITO         Int?
+  IB_AgRet                       Int?
+  IB_AgPercep                    Int?
+  IB_BuenContrib                 Int?
+  EsExtranjero                   Int?
+  DefinirDiasCredito             Int?
+  IB_ConsumidorFinal             Int?
+  C_IB_PAGO_DESTINO              Int?
+  C_IB_AGENTE                    Int?
+  Estado                         Int?
+  C_CONTRASENA_WEB               String?
+}
+
+model ManualSearch {
+  id            Int                @id @default(autoincrement())
+  C_ID          String             @unique
+  dateConsulted DateTime           @default(now())
+  status        ManualSearchStatus @default(PENDING)
+}
+
+enum ManualSearchStatus {
+  PENDING
+  NOT_FOUND
+}

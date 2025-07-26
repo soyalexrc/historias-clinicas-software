@@ -10,8 +10,11 @@ export default async function Layout({children}: Readonly<{ children: React.Reac
     }
 
     return (
-        <div className='pt-12 min-h-screen'>
-            {children}
+        <div>
+            <MainNavigationMenu user={user} />
+            <div className='pt-12 min-h-screen'>
+                {children}
+            </div>
         </div>
     )
 }
