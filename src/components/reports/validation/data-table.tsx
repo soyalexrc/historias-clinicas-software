@@ -29,7 +29,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {Eye} from "lucide-react";
 import {DataTablePagination} from "@/components/reports/validation/pagination";
-import {validateTicketsAction} from "@/actions/tickets";
 import {ClerkUser} from "@/lib/interfaces/User";
 import {toast} from "sonner"
 import {useRouter} from "next/navigation";
@@ -78,19 +77,39 @@ export function DataTable<TData, TValue>({
 
     async function validateTickets() {
         setValidatingLoading(true);
-        // @ts-ignore
-        const selectedIds: number[] = table.getFilteredSelectedRowModel().rows.map(r => r.original.id);
-        const userInSessionRaw = await fetch('/api/auth/user/getUserInSession');
-        const userInSession = await userInSessionRaw.json() as ClerkUser;
-        const userFullName = userInSession.firstName + ' ' + userInSession.lastName;
-        const response = await validateTicketsAction(selectedIds, userFullName, getISOStringInLocalTimeZone());
-        setValidatingLoading(false);
+        try {
+            // @ts-ignore
+            const selectedIds: number[] = table.getFilteredSelectedRowModel().rows.map(r => r.original.id);
+            const userInSessionRaw = await fetch('/api/auth/user/getUserInSession');
+            const userInSession = await userInSessionRaw.json() as ClerkUser;
+            const userFullName = userInSession.firstName + ' ' + userInSession.lastName;
+            
+            const baseUrl = process.env.NEXT_PUBLIC_HOST_URL || '';
+            const response = await fetch(`${baseUrl}/api/ticket/validate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ticketsIds: selectedIds,
+                    valitadedBy: userFullName,
+                    dateString: getISOStringInLocalTimeZone()
+                })
+            });
+            
+            const data = await response.json();
+            setValidatingLoading(false);
 
-        toast(response.message);
+            toast(data.message);
 
-        if (response.success) {
-            router.refresh();
-            setRowSelection({});
+            if (data.success) {
+                router.refresh();
+                setRowSelection({});
+            }
+        } catch (error) {
+            setValidatingLoading(false);
+            toast('Error al validar los tickets');
+            console.error('Error validating tickets:', error);
         }
     }
 
