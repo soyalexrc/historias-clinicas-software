@@ -220,6 +220,7 @@ export default function ReportsFilters() {
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="Traumatología">Traumatología</SelectItem>
+                                                <SelectItem value="Terapia Fisica">Terapia Fisica</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </FormControl>
