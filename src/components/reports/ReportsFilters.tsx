@@ -221,6 +221,8 @@ export default function ReportsFilters() {
                                             <SelectContent>
                                                 <SelectItem value="Traumatología">Traumatología</SelectItem>
                                                 <SelectItem value="Terapia Fisica">Terapia Fisica</SelectItem>
+                                                <SelectItem value="Topico">Topico</SelectItem>
+                                                <SelectItem value="Exámenes Auxiiares">Exámenes Auxiiares</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </FormControl>
